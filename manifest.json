@@ -1,0 +1,17 @@
+{
+  "name": "Bloom — Lifestyle & Health",
+  "short_name": "Bloom",
+  "description": "Track food and macros, get meal ideas, do daily workouts, and manage your schedule — all in one cute pink app.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff5f9",
+  "theme_color": "#ff7eb3",
+  "icons": [
+    { "src": "icons/icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

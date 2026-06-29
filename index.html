@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#ff7eb3" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Bloom" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/icon-180.png" />
+<title>Bloom 🌸 — Your Lifestyle</title>
+<style>
+  :root{
+    --pink-50:#fff5f9; --pink-100:#ffe6f2; --pink-200:#ffd0e6; --pink-300:#ffb3d6;
+    --pink-400:#ff8fc2; --pink-500:#ff7eb3; --pink-600:#ff5fa2; --pink-700:#e84d8e;
+    --plum:#7a4b6b; --plum-soft:#9c6b8c; --cream:#fffafc;
+    --mint:#7be0c3; --lav:#c9a7f0; --sky:#9ad4f5; --peach:#ffc59b; --water:#7cc7f5;
+    --ink:#5b3a52; --ink-soft:#8a6a82; --white:#ffffff;
+    --shadow:0 8px 24px rgba(255,95,162,.18); --shadow-sm:0 4px 12px rgba(255,95,162,.14);
+    --radius:22px; --radius-sm:14px;
+    --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:linear-gradient(170deg,var(--pink-100) 0%,var(--pink-50) 40%,var(--cream) 100%);
+    background-attachment:fixed; color:var(--ink);
+    -webkit-font-smoothing:antialiased; overscroll-behavior-y:contain;
+  }
+  #app{max-width:520px;margin:0 auto;min-height:100vh;position:relative;
+       padding:calc(var(--safe-top) + 8px) 14px calc(94px + var(--safe-bottom)) 14px;}
+  h1,h2,h3{font-weight:700;margin:0;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 4px 14px;}
+  .logo{font-size:1.5rem;font-weight:800;color:var(--pink-700);letter-spacing:-.5px;display:flex;gap:6px;align-items:center;}
+  .logo small{font-size:.7rem;font-weight:600;color:var(--plum-soft);}
+  .gear{background:var(--white);border-radius:50%;width:42px;height:42px;font-size:1.1rem;
+        box-shadow:var(--shadow-sm);display:grid;place-items:center;}
+
+  .card{background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:16px;}
+  .card h2{font-size:1.05rem;color:var(--plum);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .muted{color:var(--ink-soft);}
+  .pill{display:inline-flex;align-items:center;gap:5px;background:var(--pink-100);color:var(--pink-700);
+        padding:5px 12px;border-radius:999px;font-size:.78rem;font-weight:700;}
+
+  .rings{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;}
+  .ring-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .ring{position:relative;width:60px;height:60px;}
+  .ring svg{transform:rotate(-90deg);}
+  .ring .val{position:absolute;inset:0;display:grid;place-items:center;font-size:.7rem;font-weight:800;color:var(--plum);}
+  .ring-label{font-size:.7rem;font-weight:700;color:var(--ink-soft);}
+  .ring-sub{font-size:.64rem;color:var(--ink-soft);}
+
+  .btn{background:linear-gradient(135deg,var(--pink-500),var(--pink-600));color:#fff;font-weight:800;
+       padding:13px 18px;border-radius:var(--radius-sm);font-size:.95rem;box-shadow:var(--shadow-sm);width:100%;}
+  .btn:active{transform:scale(.98);}
+  .btn-ghost{background:var(--pink-100);color:var(--pink-700);font-weight:800;padding:11px 16px;border-radius:12px;}
+  .btn-mini{background:var(--pink-100);color:var(--pink-700);font-weight:800;padding:7px 12px;border-radius:10px;font-size:.8rem;}
+
+  input,select,textarea{font-family:inherit;width:100%;padding:12px 14px;border-radius:12px;border:2px solid var(--pink-200);
+        background:var(--pink-50);font-size:.95rem;color:var(--ink);outline:none;}
+  input:focus,select:focus,textarea:focus{border-color:var(--pink-400);background:#fff;}
+  label{font-size:.8rem;font-weight:700;color:var(--plum-soft);display:block;margin:0 0 5px 2px;}
+  .row{display:flex;gap:10px;}
+  .row>*{flex:1;}
+
+  .item{display:flex;align-items:center;justify-content:space-between;padding:11px 4px;border-bottom:1px solid var(--pink-100);}
+  .item:last-child{border-bottom:none;}
+  .item .meta{font-size:.76rem;color:var(--ink-soft);}
+  .x{background:none;color:var(--pink-600);font-size:1.2rem;font-weight:800;padding:0 6px;}
+
+  /* Date navigator */
+  .datenav{display:flex;align-items:center;justify-content:space-between;background:var(--white);
+           border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);padding:8px 10px;margin-bottom:14px;}
+  .datenav .arr{background:var(--pink-100);color:var(--pink-700);width:34px;height:34px;border-radius:50%;font-size:1.1rem;font-weight:800;}
+  .datenav .lbl{font-weight:800;color:var(--plum);font-size:.95rem;text-align:center;}
+  .datenav .lbl small{display:block;font-size:.66rem;font-weight:700;color:var(--pink-600);}
+
+  .nav{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.94);
+       backdrop-filter:blur(12px);box-shadow:0 -4px 20px rgba(255,95,162,.15);
+       display:flex;justify-content:space-around;padding:7px 2px calc(7px + var(--safe-bottom));border-top:1px solid var(--pink-100);}
+  .nav button{background:none;display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--ink-soft);
+              font-size:.6rem;font-weight:700;padding:3px 2px;border-radius:12px;flex:1;}
+  .nav button .ic{font-size:1.3rem;line-height:1;}
+  .nav button.active{color:var(--pink-700);}
+  .nav button.active .ic{transform:translateY(-2px);filter:drop-shadow(0 4px 6px rgba(255,95,162,.4));}
+
+  .screen{display:none;animation:fade .35s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .streak{background:linear-gradient(135deg,var(--lav),var(--pink-400));color:#fff;border-radius:var(--radius);
+          padding:18px;box-shadow:var(--shadow);margin-bottom:16px;position:relative;overflow:hidden;}
+  .streak .big{font-size:2.3rem;font-weight:900;line-height:1;}
+  .streak .lbl{font-size:.85rem;font-weight:700;opacity:.95;}
+  .streak::after{content:"🔥";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:3rem;opacity:.85;}
+
+  .check-card{display:flex;align-items:center;gap:14px;padding:14px;border-radius:var(--radius-sm);
+              background:var(--pink-50);border:2px solid var(--pink-100);margin-bottom:10px;transition:.2s;}
+  .check-card.done{background:linear-gradient(135deg,#eafff7,#e6fbf3);border-color:var(--mint);}
+  .check-box{width:34px;height:34px;border-radius:50%;border:3px solid var(--pink-300);display:grid;place-items:center;
+             font-size:1.1rem;color:#fff;flex-shrink:0;transition:.2s;}
+  .check-card.done .check-box{background:var(--mint);border-color:var(--mint);}
+  .check-card .title{font-weight:800;color:var(--plum);}
+  .check-card .sub{font-size:.76rem;color:var(--ink-soft);}
+
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .cal-head h2{font-size:1.1rem;}
+  .cal-nav{background:var(--pink-100);color:var(--pink-700);width:36px;height:36px;border-radius:50%;font-size:1.1rem;font-weight:800;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .cal-dow{text-align:center;font-size:.66rem;font-weight:800;color:var(--plum-soft);padding:4px 0;}
+  .cal-cell{aspect-ratio:1;border-radius:12px;background:var(--pink-50);display:flex;flex-direction:column;
+            align-items:center;justify-content:flex-start;padding:4px 2px;font-size:.8rem;font-weight:700;color:var(--ink);position:relative;}
+  .cal-cell.empty{background:transparent;}
+  .cal-cell.today{background:var(--pink-200);color:var(--pink-700);box-shadow:inset 0 0 0 2px var(--pink-400);}
+  .cal-cell.has{cursor:pointer;}
+  .dots{display:flex;gap:2px;margin-top:2px;flex-wrap:wrap;justify-content:center;}
+  .dot{width:6px;height:6px;border-radius:50%;}
+  .dot.work{background:var(--sky);} .dot.appt{background:var(--pink-600);}
+  .dot.health{background:var(--mint);} .dot.personal{background:var(--peach);}
+  .ev-tag{font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:6px;color:#fff;}
+  .ev-tag.work{background:var(--sky);} .ev-tag.appt{background:var(--pink-600);}
+  .ev-tag.health{background:var(--mint);} .ev-tag.personal{background:var(--peach);color:var(--plum);}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(122,75,107,.4);backdrop-filter:blur(3px);z-index:100;
+            display:none;align-items:flex-end;justify-content:center;}
+  .modal-bg.show{display:flex;}
+  .modal{background:#fff;border-radius:26px 26px 0 0;width:100%;max-width:520px;padding:22px 18px calc(28px + var(--safe-bottom));
+         box-shadow:0 -10px 40px rgba(122,75,107,.3);animation:slideup .3s ease;max-height:90vh;overflow-y:auto;}
+  @keyframes slideup{from{transform:translateY(100%);}to{transform:none;}}
+  .modal h3{color:var(--plum);font-size:1.2rem;margin-bottom:16px;}
+  .modal .grab{width:44px;height:5px;background:var(--pink-200);border-radius:999px;margin:0 auto 16px;}
+
+  .food-result{display:flex;justify-content:space-between;align-items:center;padding:10px 4px;border-bottom:1px solid var(--pink-100);gap:8px;}
+  .food-result .nm{font-weight:700;color:var(--plum);font-size:.92rem;}
+  .food-result .acts{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+  .iconbtn{width:30px;height:30px;border-radius:50%;font-size:1.15rem;font-weight:800;line-height:1;display:grid;place-items:center;}
+  .add{background:var(--pink-500);color:#fff;}
+  .star{background:var(--pink-100);color:var(--pink-600);}
+  .star.on{background:#ffe9a8;color:#e0a200;}
+  .src{font-size:.64rem;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 4px;}
+
+  .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .ing-chip{background:var(--pink-100);color:var(--pink-700);padding:6px 12px;border-radius:999px;font-size:.82rem;font-weight:700;display:flex;gap:6px;align-items:center;}
+  .ing-chip button{background:none;color:var(--pink-600);font-weight:800;}
+  .fav-chip{background:#fff7e6;color:#c98a00;border:2px solid #ffe9a8;padding:7px 12px;border-radius:999px;font-size:.8rem;font-weight:800;}
+
+  .meal-sec{border:2px solid var(--pink-100);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;}
+  .meal-sec h3{font-size:.95rem;color:var(--plum);display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+  .meal-sec h3 .kc{font-size:.74rem;font-weight:800;color:var(--pink-600);}
+  .meal-add{background:var(--pink-50);color:var(--pink-700);font-weight:800;width:100%;padding:9px;border-radius:10px;font-size:.82rem;border:1px dashed var(--pink-300);margin-top:6px;}
+
+  .water-cups{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0;}
+  .cup{font-size:1.7rem;cursor:pointer;filter:grayscale(1);opacity:.4;transition:.15s;}
+  .cup.full{filter:none;opacity:1;transform:scale(1.05);}
+  .water-stat{text-align:center;font-weight:800;color:var(--water);font-size:1.1rem;}
+
+  .recipe-card{padding:14px;}
+  .recipe-card h3{color:var(--plum);font-size:1rem;margin-bottom:4px;}
+  .match-bar{height:8px;background:var(--pink-100);border-radius:999px;overflow:hidden;margin:8px 0;}
+  .match-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--pink-400));}
+  .macro-mini{display:flex;gap:10px;font-size:.74rem;font-weight:700;color:var(--ink-soft);margin-top:6px;flex-wrap:wrap;}
+  .macro-mini b{color:var(--plum);}
+
+  .baby-age{background:linear-gradient(135deg,var(--sky),var(--lav));color:#fff;border-radius:var(--radius);
+            padding:16px 18px;box-shadow:var(--shadow);margin-bottom:16px;display:flex;align-items:center;gap:14px;}
+  .baby-age .em{font-size:2.4rem;}
+  .baby-age .big{font-size:1.5rem;font-weight:900;line-height:1.05;}
+  .baby-age .lbl{font-size:.8rem;font-weight:700;opacity:.95;}
+  .why{font-size:.72rem;color:var(--ink-soft);margin-top:2px;}
+
+  .empty-state{text-align:center;padding:26px 10px;color:var(--ink-soft);}
+  .empty-state .big{font-size:2.6rem;margin-bottom:8px;}
+
+  .confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:200;}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:108px;background:var(--plum);color:#fff;
+         padding:12px 20px;border-radius:999px;font-weight:700;font-size:.85rem;z-index:150;box-shadow:var(--shadow);
+         opacity:0;transition:.3s;pointer-events:none;max-width:90%;text-align:center;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
+  .seg{display:flex;background:var(--pink-100);border-radius:12px;padding:4px;margin-bottom:14px;}
+  .seg button{flex:1;background:none;padding:9px;border-radius:9px;font-weight:800;font-size:.85rem;color:var(--pink-700);}
+  .seg button.active{background:#fff;box-shadow:var(--shadow-sm);}
+  .linkbtn{display:inline-flex;align-items:center;gap:6px;background:var(--pink-100);color:var(--pink-700);
+           font-weight:800;padding:9px 12px;border-radius:10px;font-size:.82rem;text-decoration:none;margin:4px 4px 0 0;}
+  .linkbtn.gcal{background:#e8f0fe;color:#1a73e8;}
+  .linkbtn.map{background:#e6fbf3;color:#1a9e76;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <div class="logo">🌸 Bloom <small id="greet"></small></div>
+    <button class="gear" onclick="openSettings()">⚙️</button>
+  </div>
+
+  <!-- ============ TODAY ============ -->
+  <section id="screen-today" class="screen active">
+    <div class="streak">
+      <div class="lbl">Workout streak</div>
+      <div class="big"><span id="streakDays">0</span> days</div>
+      <div class="lbl" id="streakMsg"></div>
+    </div>
+    <div class="card">
+      <h2>🍓 Today's Nutrition</h2>
+      <div class="rings" id="macroRings"></div>
+    </div>
+    <div class="card">
+      <h2>💧 Water</h2>
+      <div id="waterToday"></div>
+    </div>
+    <div class="card">
+      <h2>💪 Today's Movement</h2>
+      <div id="todayWorkouts"></div>
+    </div>
+    <div class="card">
+      <h2>🧸 Time with Lucas</h2>
+      <div id="todayBaby"></div>
+    </div>
+    <div class="card">
+      <h2>📅 Today's Schedule</h2>
+      <div id="todayEvents"></div>
+    </div>
+  </section>
+
+  <!-- ============ FOOD ============ -->
+  <section id="screen-food" class="screen">
+    <div class="datenav" id="foodDateNav"></div>
+    <div class="card">
+      <h2>🍽️ Add Food</h2>
+      <p class="muted" style="font-size:.8rem;margin:-6px 0 10px;">Adding to: <b id="mealTargetLbl" style="color:var(--pink-700)"></b> — tap a meal below to change.</p>
+      <input id="foodSearch" placeholder="Search food (chicken, oats, banana…)" oninput="searchFood()" />
+      <div id="foodResults" style="margin-top:6px;"></div>
+      <button class="btn-ghost" style="margin-top:10px;width:100%" onclick="openCustomFood()">➕ Add custom food</button>
+    </div>
+    <div class="card" id="favCard" style="display:none">
+      <h2>⭐ Your Saved Foods</h2>
+      <p class="muted" style="font-size:.78rem;margin:-6px 0 8px;">Tap to quick-add to <b id="mealTargetLbl2" style="color:var(--pink-700)"></b>.</p>
+      <div class="tag-list" id="favList"></div>
+    </div>
+    <div class="card">
+      <h2>📋 Daily Log <span class="pill" id="foodKcal">0 kcal</span></h2>
+      <div id="foodLogList"></div>
+    </div>
+  </section>
+
+  <!-- ============ MEALS ============ -->
+  <section id="screen-meals" class="screen">
+    <div class="card">
+      <h2>🥗 What can I make?</h2>
+      <p class="muted" style="font-size:.85rem;margin:0 0 10px;">Add ingredients you have — I'll suggest meals you can make right now. Star ⭐ items you buy often.</p>
+      <div class="row">
+        <input id="ingInput" placeholder="e.g. eggs, spinach…" onkeydown="if(event.key==='Enter')addIngredient()" />
+        <button class="btn-mini" style="flex:0 0 auto;padding:12px 16px" onclick="addIngredient()">Add</button>
+      </div>
+      <div class="tag-list" id="ingList"></div>
+    </div>
+    <div id="recipeResults"></div>
+  </section>
+
+  <!-- ============ WORKOUTS ============ -->
+  <section id="screen-workouts" class="screen">
+    <div class="datenav" id="moveDateNav"></div>
+    <div class="seg">
+      <button id="seg-strength" class="active" onclick="setWorkoutTab('strength')">🏋️ Strength</button>
+      <button id="seg-cardio" onclick="setWorkoutTab('cardio')">🏃‍♀️ Cardio</button>
+    </div>
+    <div class="card">
+      <h2 id="workoutTitle">🏋️ Strength Workouts</h2>
+      <p class="muted" style="font-size:.83rem;margin:0 0 14px;">Tap a circle to check it off — plan ahead or back-fill any day! ✨</p>
+      <div id="workoutList"></div>
+    </div>
+    <div class="card">
+      <h2>🏆 This Week</h2>
+      <div id="weekDots" style="display:flex;justify-content:space-between;text-align:center;"></div>
+    </div>
+  </section>
+
+  <!-- ============ CALENDAR ============ -->
+  <section id="screen-calendar" class="screen">
+    <div class="card">
+      <div class="cal-head">
+        <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+        <h2 id="calMonth"></h2>
+        <button class="cal-nav" onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <button class="btn" style="margin-top:16px" onclick="openEvent()">➕ Add Event</button>
+    </div>
+    <div class="card">
+      <h2>🔜 Upcoming</h2>
+      <div id="upcomingList"></div>
+    </div>
+  </section>
+
+  <!-- ============ BABY ============ -->
+  <section id="screen-baby" class="screen">
+    <div class="datenav" id="babyDateNav"></div>
+    <div class="baby-age" id="babyAge"></div>
+    <div class="card">
+      <h2>🌟 Today's Activities with Lucas</h2>
+      <p class="muted" style="font-size:.82rem;margin:0 0 12px;">A fresh set of age-appropriate, play-based ideas each day. Check off the ones you do together! 💕</p>
+      <div id="babyList"></div>
+    </div>
+    <div class="card">
+      <p class="muted" style="font-size:.74rem;margin:0;">💡 These are general, play-based ideas for fun and bonding — every child grows at their own pace. For milestone concerns, your pediatrician is the best guide.</p>
+    </div>
+  </section>
+</div>
+
+<nav class="nav">
+  <button id="nav-today" class="active" onclick="go('today')"><span class="ic">🏠</span>Today</button>
+  <button id="nav-food" onclick="go('food')"><span class="ic">🍓</span>Food</button>
+  <button id="nav-meals" onclick="go('meals')"><span class="ic">🥗</span>Meals</button>
+  <button id="nav-workouts" onclick="go('workouts')"><span class="ic">💪</span>Move</button>
+  <button id="nav-calendar" onclick="go('calendar')"><span class="ic">📅</span>Cal</button>
+  <button id="nav-baby" onclick="go('baby')"><span class="ic">🧸</span>Lucas</button>
+</nav>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBody"></div>
+</div>
+<div class="toast" id="toast"></div>
+<canvas class="confetti" id="confetti" style="display:none"></canvas>
+
+<script>
+/* ============================================================
+   BLOOM — single-file lifestyle PWA. Data stored locally.
+   ============================================================ */
+const pad=n=>String(n).padStart(2,'0');
+const dstr=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const todayStr=()=>dstr(new Date());
+const fmt=n=>Math.round(n);
+const titleCase=s=>s.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
+
+/* ---------- Meals ---------- */
+const MEALS=[
+  {key:'breakfast',label:'Breakfast',emoji:'🍳'},
+  {key:'snack1',label:'Morning Snack',emoji:'🍎'},
+  {key:'lunch',label:'Lunch',emoji:'🥪'},
+  {key:'snack2',label:'Afternoon Snack',emoji:'🥨'},
+  {key:'dinner',label:'Dinner',emoji:'🍽️'}
+];
+const mealByHour=()=>{const h=new Date().getHours();
+  if(h<10)return'breakfast';if(h<12)return'snack1';if(h<15)return'lunch';if(h<17)return'snack2';return'dinner';};
+const mealLabel=k=>{const m=MEALS.find(x=>x.key===k);return m?m.emoji+' '+m.label:'Meal';};
+
+/* ---------- Built-in food / macro database (fallback + instant) ---------- */
+const FOOD_DB=[
+  {name:"Chicken breast (grilled)",serv:"100 g",cal:165,p:31,c:0,f:3.6},
+  {name:"Ground beef 90/10 (cooked)",serv:"100 g",cal:217,p:26,c:0,f:12},
+  {name:"Salmon (baked)",serv:"100 g",cal:206,p:22,c:0,f:13},
+  {name:"Eggs (large)",serv:"1 egg",cal:72,p:6.3,c:0.4,f:5},
+  {name:"Egg whites",serv:"1 cup",cal:117,p:26,c:1.6,f:0.4},
+  {name:"Greek yogurt (nonfat)",serv:"1 cup",cal:130,p:22,c:9,f:0.7},
+  {name:"Oats (dry)",serv:"1/2 cup",cal:150,p:5,c:27,f:3},
+  {name:"White rice (cooked)",serv:"1 cup",cal:205,p:4.3,c:45,f:0.4},
+  {name:"Brown rice (cooked)",serv:"1 cup",cal:218,p:5,c:46,f:1.6},
+  {name:"Sweet potato (baked)",serv:"1 medium",cal:103,p:2.3,c:24,f:0.2},
+  {name:"Banana",serv:"1 medium",cal:105,p:1.3,c:27,f:0.4},
+  {name:"Apple",serv:"1 medium",cal:95,p:0.5,c:25,f:0.3},
+  {name:"Blueberries",serv:"1 cup",cal:84,p:1.1,c:21,f:0.5},
+  {name:"Strawberries",serv:"1 cup",cal:49,p:1,c:12,f:0.5},
+  {name:"Spinach (raw)",serv:"1 cup",cal:7,p:0.9,c:1.1,f:0.1},
+  {name:"Broccoli (cooked)",serv:"1 cup",cal:55,p:3.7,c:11,f:0.6},
+  {name:"Avocado",serv:"1/2 fruit",cal:120,p:1.5,c:6,f:11},
+  {name:"Almonds",serv:"1 oz (23)",cal:164,p:6,c:6,f:14},
+  {name:"Peanut butter",serv:"2 tbsp",cal:188,p:8,c:6,f:16},
+  {name:"Whole wheat bread",serv:"1 slice",cal:80,p:4,c:14,f:1},
+  {name:"Pasta (cooked)",serv:"1 cup",cal:221,p:8,c:43,f:1.3},
+  {name:"Cheddar cheese",serv:"1 oz",cal:113,p:7,c:0.4,f:9},
+  {name:"Milk 2%",serv:"1 cup",cal:122,p:8,c:12,f:4.8},
+  {name:"Protein shake (whey)",serv:"1 scoop",cal:120,p:24,c:3,f:1.5},
+  {name:"Cottage cheese (low-fat)",serv:"1 cup",cal:163,p:28,c:6,f:2.3},
+  {name:"Black beans (cooked)",serv:"1 cup",cal:227,p:15,c:41,f:0.9},
+  {name:"Quinoa (cooked)",serv:"1 cup",cal:222,p:8,c:39,f:3.6},
+  {name:"Tuna (canned in water)",serv:"1 can",cal:142,p:33,c:0,f:1},
+  {name:"Shrimp (cooked)",serv:"100 g",cal:99,p:24,c:0.2,f:0.3},
+  {name:"Tofu (firm)",serv:"100 g",cal:144,p:17,c:3,f:9},
+  {name:"Olive oil",serv:"1 tbsp",cal:119,p:0,c:0,f:14},
+  {name:"Honey",serv:"1 tbsp",cal:64,p:0,c:17,f:0},
+  {name:"Coffee (black)",serv:"1 cup",cal:2,p:0.3,c:0,f:0},
+  {name:"Orange",serv:"1 medium",cal:62,p:1.2,c:15,f:0.2},
+  {name:"Carrots (raw)",serv:"1 cup",cal:52,p:1.2,c:12,f:0.3},
+  {name:"Bell pepper",serv:"1 medium",cal:31,p:1,c:7,f:0.3},
+  {name:"Turkey breast (deli)",serv:"2 oz",cal:60,p:11,c:2,f:1},
+  {name:"Bagel (plain)",serv:"1 medium",cal:245,p:10,c:48,f:1.5},
+  {name:"Dark chocolate 70%",serv:"1 oz",cal:170,p:2,c:13,f:12},
+  {name:"Rice cakes",serv:"1 cake",cal:35,p:0.7,c:7.3,f:0.3}
+];
+
+/* ---------- Recipes ---------- */
+const RECIPES=[
+  {name:"Protein Veggie Scramble",emoji:"🍳",ing:["eggs","spinach","bell pepper","cheese"],cal:340,p:26,c:8,f:23,steps:"Scramble eggs with chopped spinach & peppers, top with cheese."},
+  {name:"Greek Yogurt Berry Bowl",emoji:"🍓",ing:["greek yogurt","blueberries","strawberries","honey","almonds"],cal:300,p:24,c:38,f:8,steps:"Layer yogurt with berries, drizzle honey, sprinkle almonds."},
+  {name:"Chicken & Rice Power Plate",emoji:"🍗",ing:["chicken breast","rice","broccoli","olive oil"],cal:520,p:48,c:52,f:12,steps:"Grill chicken, serve over rice with steamed broccoli + olive oil."},
+  {name:"Salmon Sweet Potato Bowl",emoji:"🐟",ing:["salmon","sweet potato","spinach","avocado"],cal:540,p:34,c:35,f:28,steps:"Bake salmon & sweet potato, plate over spinach with avocado."},
+  {name:"Overnight Oats",emoji:"🥣",ing:["oats","milk","banana","peanut butter","honey"],cal:430,p:16,c:62,f:15,steps:"Mix oats + milk overnight, top with banana & peanut butter."},
+  {name:"Tuna Protein Wrap",emoji:"🌯",ing:["tuna","whole wheat bread","spinach","avocado"],cal:380,p:38,c:30,f:12,steps:"Mash tuna with avocado, wrap with spinach in bread/tortilla."},
+  {name:"Tofu Veggie Stir-Fry",emoji:"🥦",ing:["tofu","broccoli","bell pepper","rice","olive oil"],cal:450,p:22,c:55,f:16,steps:"Stir-fry tofu & veggies in oil, serve over rice."},
+  {name:"Beef & Black Bean Bowl",emoji:"🌶️",ing:["ground beef","black beans","rice","cheese"],cal:610,p:42,c:55,f:24,steps:"Brown beef, combine with beans & rice, top with cheese."},
+  {name:"Cottage Cheese Toast",emoji:"🍞",ing:["cottage cheese","whole wheat bread","strawberries"],cal:260,p:22,c:30,f:5,steps:"Spread cottage cheese on toast, top with sliced strawberries."},
+  {name:"Shrimp Quinoa Bowl",emoji:"🍤",ing:["shrimp","quinoa","spinach","avocado","olive oil"],cal:480,p:34,c:42,f:18,steps:"Sauté shrimp, serve over quinoa & spinach with avocado."},
+  {name:"PB Banana Protein Shake",emoji:"🥤",ing:["protein shake","banana","peanut butter","milk"],cal:430,p:34,c:38,f:16,steps:"Blend protein, banana, PB and milk with ice."},
+  {name:"Turkey Cheese Bagel",emoji:"🥯",ing:["bagel","turkey breast","cheese","spinach"],cal:430,p:30,c:50,f:12,steps:"Layer turkey, cheese & spinach on a toasted bagel."}
+];
+
+/* ---------- Workouts ---------- */
+const WORKOUTS={
+  strength:[
+    {id:"s1",title:"Upper Body Push",sub:"Push-ups · Shoulder press · Tricep dips",emoji:"💪"},
+    {id:"s2",title:"Lower Body & Glutes",sub:"Squats · Lunges · Glute bridges",emoji:"🦵"},
+    {id:"s3",title:"Core & Abs",sub:"Plank · Crunches · Russian twists",emoji:"✨"},
+    {id:"s4",title:"Full Body Dumbbell",sub:"Rows · Goblet squats · Curls",emoji:"🏋️"},
+    {id:"s5",title:"Back & Biceps",sub:"Rows · Pull-aparts · Curls",emoji:"🌟"}
+  ],
+  cardio:[
+    {id:"c1",title:"Brisk Walk",sub:"20–30 min · easy pace",emoji:"🚶‍♀️"},
+    {id:"c2",title:"Jog / Run",sub:"15–25 min · steady",emoji:"🏃‍♀️"},
+    {id:"c3",title:"HIIT Burst",sub:"15 min · 30s on / 30s off",emoji:"🔥"},
+    {id:"c4",title:"Cycling",sub:"20–40 min · bike or stationary",emoji:"🚴‍♀️"},
+    {id:"c5",title:"Dance Cardio",sub:"20 min · fun & sweaty",emoji:"💃"}
+  ]
+};
+
+/* ---------- Baby development activity library ---------- */
+const BABY_BANDS=[
+  {min:0,max:6,label:"0–6 months",acts:[
+    {t:"Tummy time play",e:"🤸",w:"Builds neck & core strength"},
+    {t:"Talk & narrate your day",e:"🗣️",w:"Early language exposure"},
+    {t:"High-contrast book or cards",e:"⬛",w:"Visual development"},
+    {t:"Gentle rattle tracking",e:"🔔",w:"Eye tracking & hearing"},
+    {t:"Skin-to-skin cuddles",e:"🤱",w:"Bonding & regulation"},
+    {t:"Sing lullabies",e:"🎵",w:"Soothing & rhythm"},
+    {t:"Mirror time",e:"🪞",w:"Self-recognition"},
+    {t:"Reach for a dangling toy",e:"🧸",w:"Hand-eye coordination"}
+  ]},
+  {min:6,max:12,label:"6–12 months",acts:[
+    {t:"Peekaboo",e:"🙈",w:"Object permanence"},
+    {t:"Stack & knock soft blocks",e:"🧱",w:"Cause & effect"},
+    {t:"Practice sitting & reaching",e:"🪑",w:"Balance & core"},
+    {t:"Finger foods to self-feed",e:"🍌",w:"Pincer grasp"},
+    {t:"Read a board book together",e:"📖",w:"Language & focus"},
+    {t:"Roll a ball back & forth",e:"⚽",w:"Turn-taking & motor"},
+    {t:"Name objects as you point",e:"👉",w:"Vocabulary"},
+    {t:"Bang pots & make sounds",e:"🥁",w:"Cause & effect, joy"}
+  ]},
+  {min:12,max:15,label:"12–15 months",acts:[
+    {t:"Stack 2–3 soft blocks",e:"🧱",w:"Fine motor & cause-effect"},
+    {t:"Name body parts together",e:"👃",w:"Language & body awareness"},
+    {t:"Read a picture book & point",e:"📖",w:"Vocabulary & attention"},
+    {t:"Fill & dump containers",e:"🪣",w:"Spatial skills & motor"},
+    {t:"Practice walking to you",e:"🚶",w:"Gross motor & confidence"},
+    {t:"Roll or toss a soft ball",e:"⚽",w:"Coordination & turn-taking"},
+    {t:"Dance to music together",e:"🎵",w:"Rhythm & bonding"},
+    {t:"Scribble with chunky crayons",e:"🖍️",w:"Pre-writing grip"},
+    {t:"Hide a toy & find it",e:"🔍",w:"Object permanence"},
+    {t:"Self-feed finger foods",e:"🍌",w:"Independence & pincer grasp"}
+  ]},
+  {min:15,max:18,label:"15–18 months",acts:[
+    {t:"Imitate simple words",e:"🗣️",w:"Expressive language"},
+    {t:"Point to pictures when named",e:"🖼️",w:"Receptive language"},
+    {t:"Push/pull a toy while walking",e:"🛒",w:"Gross motor"},
+    {t:"Nest & stack cups",e:"🥤",w:"Size & sequencing"},
+    {t:"Make animal sounds together",e:"🐮",w:"Sound play & language"},
+    {t:"Simple shape sorter",e:"🔺",w:"Problem solving"},
+    {t:"Blow bubbles & chase them",e:"🫧",w:"Tracking & joy"},
+    {t:"Help turn book pages",e:"📚",w:"Fine motor & routines"},
+    {t:"Hand you objects on request",e:"🤲",w:"Following directions"},
+    {t:"Climb on/off a low cushion",e:"🛋️",w:"Coordination & balance"}
+  ]},
+  {min:18,max:24,label:"18–24 months",acts:[
+    {t:"Pretend play (feed a doll)",e:"🍼",w:"Imagination & empathy"},
+    {t:"Try two-word phrases",e:"💬",w:"Sentence building"},
+    {t:"Sort objects by color",e:"🌈",w:"Categorizing"},
+    {t:"Kick a ball forward",e:"⚽",w:"Gross motor"},
+    {t:"Put a toy in its bin",e:"🧺",w:"Simple chores & routine"},
+    {t:"Draw lines & circles",e:"✏️",w:"Pre-writing"},
+    {t:"Build a 4–6 block tower",e:"🧱",w:"Fine motor & focus"},
+    {t:"Name familiar objects",e:"🔑",w:"Vocabulary"},
+    {t:"Songs with hand motions",e:"🎶",w:"Memory & coordination"},
+    {t:"Jump with both feet",e:"🦘",w:"Balance & strength"}
+  ]},
+  {min:24,max:36,label:"2–3 years",acts:[
+    {t:"Match shapes & colors",e:"🟦",w:"Visual matching"},
+    {t:"Count objects to 3–5",e:"🔢",w:"Early math"},
+    {t:"Two-to-three word sentences",e:"🗨️",w:"Language growth"},
+    {t:"Simple 3–4 piece puzzle",e:"🧩",w:"Problem solving"},
+    {t:"Throw & catch a large ball",e:"🤾",w:"Coordination"},
+    {t:"Pretend cooking play",e:"🍳",w:"Imaginative play"},
+    {t:"Sort big vs small",e:"🪣",w:"Comparing concepts"},
+    {t:"Listen to a short story",e:"📖",w:"Attention & vocab"},
+    {t:"Stand on one foot",e:"🦩",w:"Balance"},
+    {t:"Follow a 2-step instruction",e:"📋",w:"Memory & listening"}
+  ]}
+];
+
+/* ---------- State ---------- */
+const DEFAULT_STATE={
+  profile:{name:"",goals:{cal:1800,p:130,c:170,f:55},waterGoal:64,sonName:"Lucas",sonDob:"2025-04-17",usdaKey:""},
+  foodLog:{}, workoutLog:{}, events:[], ingredients:[], favorites:[], water:{}, babyLog:{}
+};
+let state=load();
+let view={month:new Date().getMonth(),year:new Date().getFullYear(),workoutTab:"strength",date:todayStr(),meal:mealByHour()};
+
+function load(){
+  try{const s=JSON.parse(localStorage.getItem("bloom_state"));
+    if(!s)return structuredClone(DEFAULT_STATE);
+    return {...structuredClone(DEFAULT_STATE),...s,profile:{...DEFAULT_STATE.profile,...(s.profile||{})}};}
+  catch(e){return structuredClone(DEFAULT_STATE);}
+}
+function save(){localStorage.setItem("bloom_state",JSON.stringify(state));}
+
+/* ---------- Navigation ---------- */
+function go(screen){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  document.getElementById("screen-"+screen).classList.add("active");
+  document.getElementById("nav-"+screen).classList.add("active");
+  window.scrollTo(0,0);
+  if(screen==="today")renderToday();
+  if(screen==="food")renderFoodScreen();
+  if(screen==="meals")renderRecipes();
+  if(screen==="workouts")renderWorkouts();
+  if(screen==="calendar")renderCalendar();
+  if(screen==="baby")renderBaby();
+}
+
+/* ---------- Date navigator (shared) ---------- */
+function dateNavHTML(){
+  const isToday=view.date===todayStr();
+  const d=new Date(view.date+"T00:00");
+  const lbl=d.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+  return `<button class="arr" onclick="shiftDate(-1)">‹</button>
+    <div class="lbl">${lbl}<small>${isToday?'TODAY':'tap to jump to today'}</small></div>
+    <button class="arr" onclick="shiftDate(1)">›</button>`;
+}
+function paintDateNavs(){
+  ["foodDateNav","moveDateNav","babyDateNav"].forEach(id=>{const el=document.getElementById(id);if(el){el.innerHTML=dateNavHTML();el.onclick=e=>{if(e.target.classList.contains('lbl')||e.target.tagName==='SMALL'){jumpToday();}};}});
+}
+function shiftDate(n){const d=new Date(view.date+"T00:00");d.setDate(d.getDate()+n);view.date=dstr(d);refreshDated();}
+function jumpToday(){view.date=todayStr();refreshDated();}
+function refreshDated(){
+  const active=document.querySelector(".screen.active").id;
+  paintDateNavs();
+  if(active==="screen-food")renderFoodScreen();
+  if(active==="screen-workouts")renderWorkouts();
+  if(active==="screen-baby")renderBaby();
+}
+
+/* ---------- TODAY ---------- */
+function renderToday(){
+  const h=new Date().getHours();
+  const name=state.profile.name?", "+state.profile.name:"";
+  document.getElementById("greet").textContent=(h<12?"Good morning":h<18?"Good afternoon":"Good evening")+name;
+  const streak=calcStreak();
+  document.getElementById("streakDays").textContent=streak;
+  document.getElementById("streakMsg").textContent=
+    streak===0?"Let's get moving today! 💪":streak<3?"Great start — keep it going! 🌱":streak<7?"You're on a roll! 🌸":"Incredible consistency! 👑";
+  renderRings(todayStr());
+  renderWater("waterToday",todayStr());
+  renderTodayWorkouts();
+  renderTodayBaby();
+  renderTodayEvents();
+}
+function dayTotals(date){
+  const log=state.foodLog[date]||[];
+  return log.reduce((a,f)=>({cal:a.cal+f.cal*f.qty,p:a.p+f.p*f.qty,c:a.c+f.c*f.qty,f:a.f+f.f*f.qty}),{cal:0,p:0,c:0,f:0});
+}
+function ring(label,val,goal,color,unit){
+  const pct=Math.min(100,goal?(val/goal)*100:0);
+  const r=25,circ=2*Math.PI*r,off=circ-(pct/100)*circ;
+  return `<div class="ring-wrap"><div class="ring"><svg width="60" height="60">
+    <circle cx="30" cy="30" r="${r}" stroke="#ffe6f2" stroke-width="7" fill="none"/>
+    <circle cx="30" cy="30" r="${r}" stroke="${color}" stroke-width="7" fill="none"
+      stroke-dasharray="${circ}" stroke-dashoffset="${off}" stroke-linecap="round"/>
+    </svg><div class="val">${fmt(val)}${unit}</div></div>
+    <div class="ring-label">${label}</div><div class="ring-sub">/ ${goal}${unit}</div></div>`;
+}
+function renderRings(date){
+  const t=dayTotals(date),g=state.profile.goals;
+  document.getElementById("macroRings").innerHTML=
+    ring("Calories",t.cal,g.cal,"var(--pink-500)","")+
+    ring("Protein",t.p,g.p,"var(--mint)","g")+
+    ring("Carbs",t.c,g.c,"var(--lav)","g")+
+    ring("Fat",t.f,g.f,"var(--peach)","g");
+}
+function renderTodayWorkouts(){
+  const done=state.workoutLog[todayStr()]||[];const all=[...WORKOUTS.strength,...WORKOUTS.cardio];
+  let html=done.map(id=>{const w=all.find(x=>x.id===id);if(!w)return"";
+    return `<div class="check-card done"><div class="check-box">✓</div>
+      <div><div class="title">${w.emoji} ${w.title}</div><div class="sub">Completed today 🎉</div></div></div>`;}).join("");
+  html+=`<button class="btn-ghost" style="width:100%;margin-top:6px" onclick="go('workouts')">${done.length?"Add another workout ✨":"Pick today's workout 💖"}</button>`;
+  document.getElementById("todayWorkouts").innerHTML=html;
+}
+function renderTodayBaby(){
+  const acts=babyActivities(todayStr());const done=state.babyLog[todayStr()]||[];
+  const n=acts.filter(a=>done.includes(a.id)).length;
+  document.getElementById("todayBaby").innerHTML=
+    `<div class="item"><div><div style="font-weight:800;color:var(--plum)">${n} of ${acts.length} done today</div>
+      <div class="meta">${babyAgeLabel()} • play & learn together</div></div>
+      <button class="btn-mini" onclick="go('baby')">Open 🧸</button></div>`;
+}
+function renderTodayEvents(){
+  const evs=state.events.filter(e=>e.date===todayStr()).sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+  document.getElementById("todayEvents").innerHTML=evs.length?evs.map(e=>`
+    <div class="item"><div><span class="ev-tag ${e.type}">${e.type}</span>
+      <div style="font-weight:800;color:var(--plum);margin-top:4px">${e.title}</div>
+      ${e.address?`<div class="meta">📍 ${e.address}</div>`:''}</div>
+    <div class="meta">${e.time||"All day"}</div></div>`).join("")
+    :`<div class="empty-state"><div class="big">🗓️</div>Nothing scheduled today.</div>`;
+}
+
+/* ---------- FOOD ---------- */
+function renderFoodScreen(){paintDateNavs();setMealLabels();renderFavs();renderFoodLog();}
+function setMeal(k){view.meal=k;setMealLabels();searchFood();toast("Adding to "+mealLabel(k));}
+function setMealLabels(){
+  const l=mealLabel(view.meal);
+  ["mealTargetLbl","mealTargetLbl2"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=l;});
+}
+let usdaTimer;
+function searchFood(){
+  const q=document.getElementById("foodSearch").value.trim();
+  const box=document.getElementById("foodResults");
+  if(!q){box.innerHTML="";return;}
+  const ql=q.toLowerCase();
+  const local=FOOD_DB.filter(f=>f.name.toLowerCase().includes(ql)).slice(0,6);
+  box.innerHTML=(local.length?`<div class="src">Quick picks</div>`+local.map(f=>foodRow(f)).join(""):"")
+    +`<div class="src" id="usdaHdr">Searching USDA database… 🌐</div><div id="usdaResults"></div>`;
+  clearTimeout(usdaTimer);
+  usdaTimer=setTimeout(()=>usdaSearch(q),450);
+}
+async function usdaSearch(q){
+  const hdr=document.getElementById("usdaHdr");
+  try{
+    const key=state.profile.usdaKey||"DEMO_KEY";
+    const url=`https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(q)}&pageSize=12&dataType=Foundation,SR%20Legacy,Branded&api_key=${key}`;
+    const r=await fetch(url);if(!r.ok)throw new Error("bad");
+    const j=await r.json();
+    const foods=(j.foods||[]).map(f=>{
+      const get=num=>{const x=(f.foodNutrients||[]).find(z=>String(z.nutrientNumber)===num);return x&&x.value?x.value:0;};
+      return {name:titleCase((f.brandName?f.brandName+" ":"")+f.description),serv:"100 g",cal:get('208'),p:get('203'),c:get('205'),f:get('204'),usda:true};
+    }).filter(f=>f.cal||f.p||f.c||f.f);
+    if(hdr)hdr.textContent="From USDA database 🌐";
+    document.getElementById("usdaResults").innerHTML=foods.length?foods.map(f=>foodRow(f)).join(""):`<p class="muted" style="padding:8px;font-size:.82rem">No extra results — use a quick pick or add custom.</p>`;
+  }catch(e){
+    if(hdr)hdr.textContent="USDA database unavailable (offline or rate-limited) — quick picks & custom still work.";
+    const ur=document.getElementById("usdaResults");if(ur)ur.innerHTML="";
+  }
+}
+function foodRow(f){
+  const data=encodeURIComponent(JSON.stringify({name:f.name,serv:f.serv,cal:f.cal,p:f.p,c:f.c,f:f.f}));
+  const isFav=state.favorites.some(x=>x.name===f.name);
+  return `<div class="food-result"><div style="min-width:0"><div class="nm">${f.name}</div>
+    <div class="meta">${f.serv} · ${fmt(f.cal)} kcal · P${fmt(f.p)} C${fmt(f.c)} F${fmt(f.f)}</div></div>
+    <div class="acts">
+      <button class="iconbtn star ${isFav?'on':''}" onclick="toggleFav('${data}')">★</button>
+      <button class="iconbtn add" onclick="addFood('${data}')">+</button></div></div>`;
+}
+function addFood(data){
+  const f=JSON.parse(decodeURIComponent(data));const d=view.date;
+  state.foodLog[d]=state.foodLog[d]||[];
+  state.foodLog[d].push({...f,qty:1,meal:view.meal});
+  save();toast(`Added to ${mealLabel(view.meal)} 🍓`);
+  document.getElementById("foodSearch").value="";document.getElementById("foodResults").innerHTML="";
+  renderFoodLog();
+}
+function toggleFav(data){
+  const f=JSON.parse(decodeURIComponent(data));
+  const i=state.favorites.findIndex(x=>x.name===f.name);
+  if(i>-1){state.favorites.splice(i,1);toast("Removed from saved");}
+  else{state.favorites.push(f);toast("⭐ Saved for quick add");}
+  save();renderFavs();searchFood();
+}
+function renderFavs(){
+  const card=document.getElementById("favCard");
+  if(!state.favorites.length){card.style.display="none";return;}
+  card.style.display="";
+  document.getElementById("favList").innerHTML=state.favorites.map((f,i)=>
+    `<span class="ing-chip fav-chip" onclick="addFav(${i})">⭐ ${f.name} <button onclick="event.stopPropagation();rmFav(${i})" style="color:#c98a00">×</button></span>`).join("");
+}
+function addFav(i){const f=state.favorites[i];const d=view.date;state.foodLog[d]=state.foodLog[d]||[];
+  state.foodLog[d].push({...f,qty:1,meal:view.meal});save();toast(`Added to ${mealLabel(view.meal)} 🍓`);renderFoodLog();}
+function rmFav(i){state.favorites.splice(i,1);save();renderFavs();}
+function renderFoodLog(){
+  const d=view.date,log=state.foodLog[d]||[],t=dayTotals(d);
+  document.getElementById("foodKcal").textContent=fmt(t.cal)+" kcal";
+  let html="";
+  MEALS.forEach(m=>{
+    const items=log.map((f,idx)=>({f,idx})).filter(o=>(o.f.meal||'breakfast')===m.key);
+    const kc=items.reduce((a,o)=>a+o.f.cal*o.f.qty,0);
+    html+=`<div class="meal-sec"><h3>${m.emoji} ${m.label}<span class="kc">${fmt(kc)} kcal</span></h3>`;
+    html+=items.length?items.map(o=>`
+      <div class="item"><div style="min-width:0"><div style="font-weight:700;color:var(--plum)">${o.f.name} ${o.f.qty>1?'×'+o.f.qty:''}</div>
+        <div class="meta">${fmt(o.f.cal*o.f.qty)} kcal · P${fmt(o.f.p*o.f.qty)} C${fmt(o.f.c*o.f.qty)} F${fmt(o.f.f*o.f.qty)}</div></div>
+      <div style="display:flex;gap:4px;align-items:center">
+        <button class="btn-mini" onclick="qty(${o.idx},1)">+</button>
+        <button class="btn-mini" onclick="qty(${o.idx},-1)">–</button>
+        <button class="x" onclick="delFood(${o.idx})">×</button></div></div>`).join("")
+      :`<p class="muted" style="font-size:.78rem;padding:4px 2px">Nothing yet.</p>`;
+    html+=`<button class="meal-add" onclick="addToMeal('${m.key}')">＋ Add to ${m.label}</button></div>`;
+  });
+  document.getElementById("foodLogList").innerHTML=html;
+}
+function addToMeal(k){view.meal=k;setMealLabels();window.scrollTo({top:0,behavior:'smooth'});document.getElementById("foodSearch").focus();toast("Adding to "+mealLabel(k));}
+function qty(i,d){const f=state.foodLog[view.date][i];f.qty=Math.max(1,f.qty+d);save();renderFoodLog();}
+function delFood(i){state.foodLog[view.date].splice(i,1);save();renderFoodLog();}
+function openCustomFood(){
+  showModal(`<div class="grab"></div><h3>Add custom food 🧁</h3>
+    <label>Name</label><input id="cf_name" placeholder="My snack"/>
+    <div class="row" style="margin-top:10px"><div><label>Calories</label><input id="cf_cal" type="number" inputmode="numeric"/></div>
+      <div><label>Protein (g)</label><input id="cf_p" type="number" inputmode="numeric"/></div></div>
+    <div class="row" style="margin-top:10px"><div><label>Carbs (g)</label><input id="cf_c" type="number" inputmode="numeric"/></div>
+      <div><label>Fat (g)</label><input id="cf_f" type="number" inputmode="numeric"/></div></div>
+    <label style="margin-top:10px">Meal</label><select id="cf_meal">${MEALS.map(m=>`<option value="${m.key}" ${m.key===view.meal?'selected':''}>${m.label}</option>`).join("")}</select>
+    <label style="margin-top:10px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="cf_fav" style="width:auto"/> Save to my foods ⭐</label>
+    <button class="btn" style="margin-top:16px" onclick="saveCustomFood()">Add to log 💖</button>`);
+}
+function saveCustomFood(){
+  const g=id=>document.getElementById(id).value;
+  const f={name:g("cf_name")||"Custom food",serv:"1 serving",cal:+g("cf_cal")||0,p:+g("cf_p")||0,c:+g("cf_c")||0,f:+g("cf_f")||0};
+  const meal=g("cf_meal");const d=view.date;state.foodLog[d]=state.foodLog[d]||[];
+  state.foodLog[d].push({...f,qty:1,meal});
+  if(document.getElementById("cf_fav").checked&&!state.favorites.some(x=>x.name===f.name))state.favorites.push(f);
+  save();closeModal();toast("Added 🍓");renderFoodScreen();
+}
+
+/* ---------- WATER ---------- */
+function renderWater(containerId,date){
+  const goal=state.profile.waterGoal||64;const cupSize=8;const cups=Math.ceil(goal/cupSize);
+  const oz=state.water[date]||0;const filled=Math.round(oz/cupSize);
+  let cupHtml="";for(let i=0;i<cups;i++)cupHtml+=`<span class="cup ${i<filled?'full':''}" onclick="setWater('${date}',${(i+1)*cupSize})">🥤</span>`;
+  document.getElementById(containerId).innerHTML=
+    `<div class="water-stat">${oz} / ${goal} oz</div>
+     <div class="water-cups">${cupHtml}</div>
+     <div class="row"><button class="btn-mini" onclick="addWater('${date}',8)">+8 oz</button>
+       <button class="btn-mini" onclick="addWater('${date}',16)">+16 oz</button>
+       <button class="btn-mini" onclick="addWater('${date}',-8)">–8 oz</button></div>`;
+}
+function addWater(date,oz){state.water[date]=Math.max(0,(state.water[date]||0)+oz);save();
+  const onToday=document.querySelector("#screen-today").classList.contains("active");
+  renderWater(onToday?"waterToday":"waterToday",date);
+  if(onToday)renderWater("waterToday",todayStr());}
+function setWater(date,oz){const cur=state.water[date]||0;state.water[date]=(cur===oz)?oz-8:oz;if(state.water[date]<0)state.water[date]=0;save();renderWater("waterToday",date);}
+
+/* ---------- MEALS / ingredient matching ---------- */
+function addIngredient(){
+  const v=document.getElementById("ingInput").value.toLowerCase().trim();if(!v)return;
+  if(!state.ingredients.includes(v))state.ingredients.push(v);
+  document.getElementById("ingInput").value="";save();renderRecipes();
+}
+function delIngredient(i){state.ingredients.splice(i,1);save();renderRecipes();}
+function renderRecipes(){
+  document.getElementById("ingList").innerHTML=state.ingredients.map((ing,i)=>
+    `<span class="ing-chip">${ing}<button onclick="delIngredient(${i})">×</button></span>`).join("");
+  const have=state.ingredients;const box=document.getElementById("recipeResults");
+  if(!have.length){box.innerHTML=`<div class="card empty-state"><div class="big">🥗</div>Add ingredients above to see meals you can make.</div>`;return;}
+  const scored=RECIPES.map(r=>{
+    const matches=r.ing.filter(i=>have.some(h=>i.includes(h)||h.includes(i)));
+    return {r,score:matches.length/r.ing.length,matches,missing:r.ing.filter(i=>!have.some(h=>i.includes(h)||h.includes(i)))};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
+  box.innerHTML=scored.length?scored.map(x=>`
+    <div class="card recipe-card">
+      <h3>${x.r.emoji} ${x.r.name}</h3>
+      <div class="match-bar"><i style="width:${fmt(x.score*100)}%"></i></div>
+      <div class="meta" style="font-size:.76rem">${fmt(x.score*100)}% match · you have ${x.matches.length}/${x.r.ing.length} ingredients</div>
+      <div class="macro-mini"><span><b>${x.r.cal}</b> kcal</span><span><b>${x.r.p}g</b> protein</span><span><b>${x.r.c}g</b> carbs</span><span><b>${x.r.f}g</b> fat</span></div>
+      <p style="font-size:.83rem;margin:10px 0 8px;color:var(--ink)">${x.r.steps}</p>
+      ${x.missing.length?`<p class="meta" style="font-size:.76rem">Still need: ${x.missing.join(", ")}</p>`:`<span class="pill">✓ You have everything!</span>`}
+      <button class="btn-mini" style="margin-top:8px" onclick='logRecipe(${JSON.stringify(x.r).replace(/'/g,"&#39;")})'>＋ Log this meal</button>
+    </div>`).join("")
+    :`<div class="card empty-state"><div class="big">🤔</div>No matches yet — try eggs, rice, chicken, or yogurt.</div>`;
+}
+function logRecipe(r){const d=view.date;state.foodLog[d]=state.foodLog[d]||[];
+  state.foodLog[d].push({name:r.name,serv:"1 serving",cal:r.cal,p:r.p,c:r.c,f:r.f,qty:1,meal:mealByHour()});
+  save();toast(`Logged ${r.name} 🍽️`);}
+
+/* ---------- WORKOUTS ---------- */
+function setWorkoutTab(t){view.workoutTab=t;
+  document.getElementById("seg-strength").classList.toggle("active",t==="strength");
+  document.getElementById("seg-cardio").classList.toggle("active",t==="cardio");
+  document.getElementById("workoutTitle").textContent=t==="strength"?"🏋️ Strength Workouts":"🏃‍♀️ Cardio Workouts";
+  renderWorkouts();
+}
+function renderWorkouts(){
+  paintDateNavs();
+  const list=WORKOUTS[view.workoutTab],done=state.workoutLog[view.date]||[];
+  document.getElementById("workoutList").innerHTML=list.map(w=>{
+    const isDone=done.includes(w.id);
+    return `<div class="check-card ${isDone?'done':''}" onclick="toggleWorkout('${w.id}')">
+      <div class="check-box">${isDone?'✓':''}</div>
+      <div style="flex:1"><div class="title">${w.emoji} ${w.title}</div><div class="sub">${w.sub}</div></div></div>`;
+  }).join("");
+  renderWeekDots();
+}
+function toggleWorkout(id){
+  const d=view.date;state.workoutLog[d]=state.workoutLog[d]||[];
+  const i=state.workoutLog[d].indexOf(id);
+  if(i>-1)state.workoutLog[d].splice(i,1);
+  else{state.workoutLog[d].push(id);celebrate();toast("Workout done! 🎉");}
+  save();renderWorkouts();
+}
+function renderWeekDots(){
+  const days=[],now=new Date();
+  for(let i=6;i>=0;i--){const dt=new Date(now);dt.setDate(now.getDate()-i);const ds=dstr(dt);
+    const has=(state.workoutLog[ds]||[]).length>0;
+    days.push(`<div><div style="font-size:.66rem;font-weight:800;color:var(--ink-soft)">${['S','M','T','W','T','F','S'][dt.getDay()]}</div>
+      <div style="width:34px;height:34px;border-radius:50%;margin:6px auto 0;display:grid;place-items:center;font-size:1.1rem;
+        background:${has?'linear-gradient(135deg,var(--mint),var(--pink-400))':'var(--pink-100)'}">${has?'✓':''}</div></div>`);}
+  document.getElementById("weekDots").innerHTML=days.join("");
+}
+function calcStreak(){let s=0;const now=new Date();
+  for(let i=0;i<365;i++){const dt=new Date(now);dt.setDate(now.getDate()-i);const ds=dstr(dt);
+    if((state.workoutLog[ds]||[]).length>0)s++;else if(i===0)continue;else break;}
+  return s;}
+
+/* ---------- CALENDAR ---------- */
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function changeMonth(d){view.month+=d;if(view.month<0){view.month=11;view.year--;}if(view.month>11){view.month=0;view.year++;}renderCalendar();}
+function renderCalendar(){
+  document.getElementById("calMonth").textContent=MONTHS[view.month]+" "+view.year;
+  const first=new Date(view.year,view.month,1).getDay();
+  const days=new Date(view.year,view.month+1,0).getDate();
+  let html=["S","M","T","W","T","F","S"].map(d=>`<div class="cal-dow">${d}</div>`).join("");
+  for(let i=0;i<first;i++)html+=`<div class="cal-cell empty"></div>`;
+  for(let d=1;d<=days;d++){
+    const ds=`${view.year}-${pad(view.month+1)}-${pad(d)}`;
+    const evs=state.events.filter(e=>e.date===ds);
+    const dots=[...new Set(evs.map(e=>e.type))].map(t=>`<span class="dot ${t}"></span>`).join("");
+    html+=`<div class="cal-cell ${ds===todayStr()?'today':''} ${evs.length?'has':''}" onclick="openDay('${ds}')">${d}<div class="dots">${dots}</div></div>`;
+  }
+  document.getElementById("calGrid").innerHTML=html;renderUpcoming();
+}
+function renderUpcoming(){
+  const t=todayStr();
+  const evs=state.events.filter(e=>e.date>=t).sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||""))).slice(0,6);
+  document.getElementById("upcomingList").innerHTML=evs.length?evs.map(e=>`
+    <div class="item"><div style="min-width:0"><span class="ev-tag ${e.type}">${e.type}</span>
+      <div style="font-weight:800;color:var(--plum);margin-top:4px">${e.title}</div>
+      <div class="meta">${prettyDate(e.date)} ${e.time?'· '+e.time:''}${e.address?' · 📍 '+e.address:''}</div></div>
+      <button class="x" onclick="delEvent('${e.id}')">×</button></div>`).join("")
+    :`<div class="empty-state"><div class="big">🗓️</div>No upcoming events.</div>`;
+}
+function prettyDate(ds){const d=new Date(ds+"T00:00");return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});}
+function openDay(ds){
+  const evs=state.events.filter(e=>e.date===ds).sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+  showModal(`<div class="grab"></div><h3>${prettyDate(ds)}</h3>
+    ${evs.length?evs.map(e=>eventDetail(e)).join(""):'<p class="muted" style="text-align:center;padding:14px">Nothing scheduled.</p>'}
+    <button class="btn" style="margin-top:14px" onclick="openEvent('${ds}')">➕ Add event this day</button>`);
+}
+function eventDetail(e){
+  const links=[];
+  if(e.address){links.push(`<a class="linkbtn map" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(e.address)}">🧭 Directions & ETA</a>`);}
+  links.push(`<a class="linkbtn gcal" target="_blank" href="${gcalLink(e)}">📅 Add to Google Calendar</a>`);
+  return `<div class="item" style="flex-direction:column;align-items:stretch;gap:6px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div><span class="ev-tag ${e.type}">${e.type}</span>
+        <div style="font-weight:800;color:var(--plum);margin-top:4px">${e.title}</div>
+        <div class="meta">${e.time||'All day'}${e.leadMins?' · leave reminder '+e.leadMins+' min before':''}</div>
+        ${e.address?`<div class="meta">📍 ${e.address}</div>`:''}</div>
+      <button class="x" onclick="delEvent('${e.id}')">×</button></div>
+    <div>${links.join("")}</div></div>`;
+}
+function gcalLink(e){
+  const start=(e.date.replace(/-/g,''))+(e.time?'T'+e.time.replace(':','')+'00':'');
+  let endStr;
+  if(e.time){const [hh,mm]=e.time.split(':').map(Number);const dt=new Date(e.date+'T'+e.time);dt.setHours(hh+1);
+    endStr=e.date.replace(/-/g,'')+'T'+pad(dt.getHours())+pad(mm)+'00';}
+  else{endStr=e.date.replace(/-/g,'');}
+  const dates=e.time?`${start}/${endStr}`:`${start}/${start}`;
+  const params=new URLSearchParams({action:'TEMPLATE',text:e.title,dates,details:'Added from Bloom 🌸',location:e.address||''});
+  return 'https://calendar.google.com/calendar/render?'+params.toString();
+}
+function openEvent(ds){
+  ds=ds||view.date||todayStr();
+  showModal(`<div class="grab"></div><h3>Add event 🗓️</h3>
+    <label>What is it?</label><input id="ev_title" placeholder="Work shift / Dr. appointment…"/>
+    <label style="margin-top:10px">Type</label>
+    <select id="ev_type"><option value="work">Work shift</option><option value="appt">Appointment</option>
+      <option value="health">Health / Doctor</option><option value="personal">Personal</option></select>
+    <div class="row" style="margin-top:10px"><div><label>Date</label><input id="ev_date" type="date" value="${ds}"/></div>
+      <div><label>Time</label><input id="ev_time" type="time"/></div></div>
+    <label style="margin-top:10px">Address (optional — enables directions & ETA)</label>
+    <input id="ev_addr" placeholder="123 Main St, Phoenix, AZ"/>
+    <label style="margin-top:10px">Remind me to leave (minutes before)</label>
+    <input id="ev_lead" type="number" inputmode="numeric" value="30"/>
+    <button class="btn" style="margin-top:16px" onclick="saveEvent()">Save 💖</button>
+    <p class="muted" style="font-size:.74rem;margin-top:10px">Tip: after saving, tap the event and "Add to Google Calendar" — Google will send the native "time to leave" alert with live ETA. 🚗</p>`);
+}
+function saveEvent(){
+  const g=id=>document.getElementById(id).value;
+  const title=g("ev_title");if(!title){toast("Add a title first 💕");return;}
+  state.events.push({id:Date.now()+"",title,type:g("ev_type"),date:g("ev_date"),time:g("ev_time"),address:g("ev_addr"),leadMins:+g("ev_lead")||0});
+  save();closeModal();toast("Event added 🗓️");renderCalendar();renderToday();scheduleReminders();
+}
+function delEvent(id){state.events=state.events.filter(e=>e.id!==id);save();closeModal();renderCalendar();renderToday();}
+
+/* ---------- BABY ---------- */
+function ageMonthsAt(ds){
+  const dob=new Date(state.profile.sonDob+"T00:00");const on=new Date(ds+"T00:00");
+  let m=(on.getFullYear()-dob.getFullYear())*12+(on.getMonth()-dob.getMonth());
+  if(on.getDate()<dob.getDate())m--;return Math.max(0,m);
+}
+function babyAgeLabel(){const m=ageMonthsAt(todayStr());
+  if(m<24)return `${m} month${m===1?'':'s'} old`;
+  const y=Math.floor(m/12),r=m%12;return `${y} yr${r?' '+r+' mo':''} old`;}
+function bandFor(m){return BABY_BANDS.find(b=>m>=b.min&&m<b.max)||BABY_BANDS[BABY_BANDS.length-1];}
+function babyActivities(ds){
+  const m=ageMonthsAt(ds);const band=bandFor(m);
+  const dayIndex=Math.floor(new Date(ds+"T00:00").getTime()/86400000);
+  const n=Math.min(4,band.acts.length);const picks=[];
+  for(let i=0;i<n;i++){const a=band.acts[(dayIndex+i)%band.acts.length];
+    picks.push({...a,id:band.label+":"+((dayIndex+i)%band.acts.length)});}
+  return picks;
+}
+function renderBaby(){
+  paintDateNavs();
+  const m=ageMonthsAt(view.date);const band=bandFor(m);
+  document.getElementById("babyAge").innerHTML=
+    `<div class="em">🧸</div><div><div class="big">${state.profile.sonName}</div>
+      <div class="lbl">${m} months • ${band.label} activities</div></div>`;
+  const acts=babyActivities(view.date);const done=state.babyLog[view.date]||[];
+  document.getElementById("babyList").innerHTML=acts.map(a=>{
+    const isDone=done.includes(a.id);
+    return `<div class="check-card ${isDone?'done':''}" onclick="toggleBaby('${a.id.replace(/'/g,"\\'")}')">
+      <div class="check-box">${isDone?'✓':''}</div>
+      <div style="flex:1"><div class="title">${a.e} ${a.t}</div><div class="why">${a.w}</div></div></div>`;
+  }).join("");
+}
+function toggleBaby(id){
+  const d=view.date;state.babyLog[d]=state.babyLog[d]||[];
+  const i=state.babyLog[d].indexOf(id);
+  if(i>-1)state.babyLog[d].splice(i,1);
+  else{state.babyLog[d].push(id);celebrate();toast("Yay! Great play time 💕");}
+  save();renderBaby();
+}
+
+/* ---------- SETTINGS ---------- */
+function openSettings(){
+  const g=state.profile.goals,p=state.profile;
+  showModal(`<div class="grab"></div><h3>Settings ⚙️</h3>
+    <label>Your name</label><input id="set_name" value="${p.name||''}" placeholder="Steph"/>
+    <h3 style="font-size:1rem;margin:18px 0 10px">Daily goals 🎯</h3>
+    <div class="row"><div><label>Calories</label><input id="set_cal" type="number" value="${g.cal}"/></div>
+      <div><label>Protein (g)</label><input id="set_p" type="number" value="${g.p}"/></div></div>
+    <div class="row" style="margin-top:10px"><div><label>Carbs (g)</label><input id="set_c" type="number" value="${g.c}"/></div>
+      <div><label>Fat (g)</label><input id="set_f" type="number" value="${g.f}"/></div></div>
+    <label style="margin-top:10px">Water goal (oz)</label><input id="set_water" type="number" value="${p.waterGoal}"/>
+    <h3 style="font-size:1rem;margin:18px 0 10px">Little one 🧸</h3>
+    <div class="row"><div><label>Name</label><input id="set_son" value="${p.sonName}"/></div>
+      <div><label>Birthday</label><input id="set_dob" type="date" value="${p.sonDob}"/></div></div>
+    <h3 style="font-size:1rem;margin:18px 0 10px">USDA food database 🌐</h3>
+    <label>Free API key (optional — DEMO key works for light use)</label>
+    <input id="set_usda" value="${p.usdaKey||''}" placeholder="Paste key from api.data.gov"/>
+    <p class="muted" style="font-size:.72rem;margin:6px 0 0">Get a free key at api.data.gov/signup — paste it here for unlimited food search.</p>
+    <button class="btn" style="margin-top:16px" onclick="enableNotifications()">🔔 Enable reminders</button>
+    <button class="btn" style="margin-top:10px" onclick="saveSettings()">Save 💖</button>
+    <button class="btn-ghost" style="width:100%;margin-top:10px" onclick="resetData()">Reset all data</button>`);
+}
+function saveSettings(){
+  const g=id=>document.getElementById(id).value;
+  state.profile.name=g("set_name");
+  state.profile.goals={cal:+g("set_cal")||1800,p:+g("set_p")||130,c:+g("set_c")||170,f:+g("set_f")||55};
+  state.profile.waterGoal=+g("set_water")||64;
+  state.profile.sonName=g("set_son")||"Lucas";
+  state.profile.sonDob=g("set_dob")||"2025-04-17";
+  state.profile.usdaKey=g("set_usda").trim();
+  save();closeModal();toast("Saved 💖");renderToday();
+}
+function resetData(){if(confirm("Erase all your Bloom data on this device?")){localStorage.removeItem("bloom_state");state=load();closeModal();go('today');}}
+
+/* ---------- Notifications (work while app is open) ---------- */
+function enableNotifications(){
+  if(!("Notification" in window)){toast("Notifications not supported here");return;}
+  Notification.requestPermission().then(p=>{toast(p==="granted"?"Reminders on 🔔":"Reminders blocked");scheduleReminders();});
+}
+let reminderTimers=[];
+function scheduleReminders(){
+  reminderTimers.forEach(t=>clearTimeout(t));reminderTimers=[];
+  if(!("Notification" in window)||Notification.permission!=="granted")return;
+  const now=Date.now();
+  state.events.filter(e=>e.date===todayStr()&&e.time).forEach(e=>{
+    const evTime=new Date(e.date+"T"+e.time).getTime();
+    const leaveAt=evTime-(e.leadMins||0)*60000;
+    if(leaveAt>now&&leaveAt-now<24*3600*1000){
+      reminderTimers.push(setTimeout(()=>{
+        new Notification("🌸 Time to head out",{body:`${e.title} at ${e.time}${e.address?' · '+e.address:''}`});
+      },leaveAt-now));
+    }
+  });
+}
+
+/* ---------- Modal + toast + confetti ---------- */
+function showModal(html){document.getElementById("modalBody").innerHTML=html;document.getElementById("modalBg").classList.add("show");}
+function closeModal(){document.getElementById("modalBg").classList.remove("show");}
+let toastT;
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),1800);}
+function celebrate(){
+  const c=document.getElementById("confetti");c.style.display="block";c.width=innerWidth;c.height=innerHeight;
+  const ctx=c.getContext("2d");const colors=["#ff7eb3","#ffb3d6","#c9a7f0","#7be0c3","#ffc59b","#fff"];
+  const parts=Array.from({length:90},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*0.5,
+    r:4+Math.random()*6,col:colors[Math.floor(Math.random()*colors.length)],vy:2+Math.random()*4,vx:-2+Math.random()*4,a:1}));
+  let frame=0;
+  (function anim(){ctx.clearRect(0,0,c.width,c.height);frame++;
+    parts.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.vy+=0.05;if(frame>60)p.a-=0.02;
+      ctx.globalAlpha=Math.max(0,p.a);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();});
+    if(frame<120)requestAnimationFrame(anim);else{c.style.display="none";ctx.clearRect(0,0,c.width,c.height);}})();
+}
+
+/* ---------- Boot ---------- */
+go('today');
+scheduleReminders();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+</script>
+</body>
+</html>
