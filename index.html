@@ -146,17 +146,19 @@
   .meal-sec h3{font-size:.95rem;color:var(--plum);display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
   .meal-sec h3 .kc{font-size:.74rem;font-weight:800;color:var(--pink-600);}
 
-  .plan-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:var(--pink-50);
-             border:2px solid var(--pink-100);margin-bottom:8px;transition:.2s;}
-  .plan-item.done{background:linear-gradient(135deg,#eafff7,#e6fbf3);border-color:var(--mint);}
-  .plan-item .cb{width:28px;height:28px;border-radius:50%;border:3px solid var(--pink-300);display:grid;place-items:center;
-                 font-size:.95rem;color:#fff;flex-shrink:0;cursor:pointer;transition:.2s;}
-  .plan-item.done .cb{background:var(--mint);border-color:var(--mint);}
-  .plan-item .body{flex:1;min-width:0;}
-  .plan-item .nm{font-weight:800;color:var(--plum);font-size:.9rem;}
-  .plan-item .mac{font-size:.72rem;color:var(--ink-soft);margin-top:2px;}
-  .plan-item .star{background:none;font-size:1.2rem;line-height:1;color:#d9c7d3;flex-shrink:0;}
-  .plan-item .star.on{color:#e0a200;}
+  .meal-card{padding:14px;transition:.2s;}
+  .meal-card.done{background:linear-gradient(135deg,#eafff7,#e6fbf3);}
+  .meal-hd{display:flex;align-items:center;gap:12px;}
+  .meal-hd .cb{width:32px;height:32px;border-radius:50%;border:3px solid var(--pink-300);display:grid;place-items:center;
+               font-size:1rem;color:#fff;flex-shrink:0;cursor:pointer;transition:.2s;}
+  .meal-card.done .meal-hd .cb{background:var(--mint);border-color:var(--mint);}
+  .meal-title{font-weight:800;color:var(--plum);font-size:.98rem;line-height:1.2;}
+  .meal-slot{font-size:.72rem;color:var(--ink-soft);margin-top:2px;font-weight:700;}
+  .micon{background:var(--pink-50);border-radius:9px;width:30px;height:30px;font-size:1rem;line-height:1;color:var(--pink-600);}
+  .micon.star{color:#d9c7d3;} .micon.star.on{color:#e0a200;background:#fff7e6;}
+  .ing{margin-top:12px;border-top:1px dashed var(--pink-200);padding-top:10px;}
+  .ing-line{display:flex;justify-content:space-between;gap:10px;padding:5px 2px;font-size:.84rem;color:var(--ink);font-weight:600;}
+  .ing-line .ing-mac{color:var(--ink-soft);font-size:.74rem;font-weight:700;flex-shrink:0;}
 
   .water-cups{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0;}
   .cup{font-size:1.7rem;cursor:pointer;filter:grayscale(1);opacity:.4;transition:.15s;}
@@ -575,7 +577,7 @@ const REVIEW_PROMPTS=[
 /* ---------- State ---------- */
 const DEFAULT_STATE={
   profile:{name:"",goals:{cal:2000,p:120,c:220,f:70},waterGoal:64,sonName:"Lucas",sonDob:"2025-04-17",openaiKey:""},
-  foodLog:{}, workoutLog:{}, events:[], favorites:[], water:{}, babyLog:{},
+  foodLog:{}, workoutLog:{}, events:[], favorites:[], favMeals:[], water:{}, babyLog:{},
   pantry:[], mealPlan:{}, reviews:{}
 };
 let state=load();
@@ -672,13 +674,13 @@ function renderTodayPlan(){
     box.innerHTML=`<div class="empty-state" style="padding:14px"><div class="big">🥫</div>Add what's in your kitchen to auto-build a plan.
       <div style="margin-top:10px"><button class="btn-mini" onclick="openPantry()">Set up kitchen</button></div></div>`;return;
   }
-  if(!plan||!plan.items.length){
+  if(!plan||!plan.meals||!plan.meals.length){
     box.innerHTML=`<div class="item"><div><div style="font-weight:800;color:var(--plum)">No plan yet for today</div>
       <div class="meta">Auto-build from your kitchen</div></div>
       <button class="btn-mini" onclick="go('plan')">Open 🍽️</button></div>`;return;
   }
-  const done=plan.items.filter(i=>i.done).length;
-  box.innerHTML=`<div class="item"><div><div style="font-weight:800;color:var(--plum)">${done} of ${plan.items.length} items eaten</div>
+  const done=plan.meals.filter(m=>m.done).length;
+  box.innerHTML=`<div class="item"><div><div style="font-weight:800;color:var(--plum)">${done} of ${plan.meals.length} meals eaten</div>
     <div class="meta">Planned: ${fmt(planTotals(plan).cal)} cal · ${fmt(planTotals(plan).p)}g protein</div></div>
     <button class="btn-mini" onclick="go('plan')">Open 🍽️</button></div>`;
 }
@@ -719,95 +721,170 @@ function renderMondayBanner(){
   } else box.innerHTML="";
 }
 
-/* ---------- MEAL PLAN ---------- */
+/* ---------- MEAL PLAN (composed Mediterranean meals) ---------- */
+/* ingredient-role matchers (operate on a stock item with .n = lowercased name, .cat) */
+const R={
+  mainprot:s=>s.cat==='protein'&&!/yogurt|cottage|egg|milk|shake/.test(s.n),
+  fish:s=>/salmon|cod|tuna|sardine|shrimp|mackerel|trout|fish/.test(s.n),
+  eggs:s=>/egg/.test(s.n),
+  yogurt:s=>/yogurt|cottage/.test(s.n),
+  legume:s=>/lentil|chickpea|bean/.test(s.n),
+  grain:s=>s.cat==='grain',
+  bread:s=>/bread|pita|toast|bagel|tortilla|wrap/.test(s.n),
+  oats:s=>/oat|granola|cereal/.test(s.n),
+  veg:s=>s.cat==='veg',
+  fruit:s=>s.cat==='fruit',
+  nuts:s=>/almond|walnut|pistachio|nut|seed/.test(s.n),
+  cheese:s=>/cheese|feta/.test(s.n),
+  hummus:s=>/hummus/.test(s.n),
+  avocado:s=>/avocado/.test(s.n),
+  oil:s=>/oil/.test(s.n),
+  olives:s=>/olive(?!\s*oil)/.test(s.n),
+  shake:s=>/shake|whey|milk/.test(s.n),
+  anyprot:s=>s.cat==='protein'
+};
+/* templates: type breakfast|main|snack. roles: {m:matcher, base:servings, req:bool} */
+const MEAL_TEMPLATES=[
+  // breakfast
+  {id:'yogurt_bowl',name:'Greek Yogurt Berry Bowl',emoji:'🍓',type:'breakfast',roles:[
+    {m:R.yogurt,base:1,req:true},{m:R.fruit,base:1,req:true},{m:R.nuts,base:1},{m:R.oats,base:1}]},
+  {id:'scramble',name:'Veggie Egg Scramble',emoji:'🍳',type:'breakfast',roles:[
+    {m:R.eggs,base:2,req:true},{m:R.veg,base:1,req:true},{m:R.cheese,base:1},{m:R.bread,base:1}]},
+  {id:'oatmeal',name:'Oatmeal & Fruit Bowl',emoji:'🥣',type:'breakfast',roles:[
+    {m:R.oats,base:1,req:true},{m:R.fruit,base:1},{m:R.nuts,base:1},{m:R.yogurt,base:1}]},
+  {id:'avotoast',name:'Avocado Toast & Eggs',emoji:'🥑',type:'breakfast',roles:[
+    {m:R.bread,base:2,req:true},{m:R.avocado,base:1,req:true},{m:R.eggs,base:2}]},
+  // mains (lunch/dinner)
+  {id:'med_bowl',name:'Mediterranean Protein Bowl',emoji:'🥗',type:'main',roles:[
+    {m:R.mainprot,base:1,req:true},{m:R.grain,base:1,req:true},{m:R.veg,base:1,req:true},{m:R.oil,base:1},{m:R.cheese,base:1}]},
+  {id:'fish_plate',name:'Baked Fish Plate',emoji:'🐟',type:'main',roles:[
+    {m:R.fish,base:1,req:true},{m:R.grain,base:1},{m:R.veg,base:1,req:true},{m:R.oil,base:1}]},
+  {id:'legume_bowl',name:'Grain & Legume Bowl',emoji:'🫓',type:'main',roles:[
+    {m:R.legume,base:1,req:true},{m:R.grain,base:1},{m:R.veg,base:1,req:true},{m:R.oil,base:1}]},
+  {id:'greek_salad',name:'Greek Salad with Protein',emoji:'🥙',type:'main',roles:[
+    {m:R.veg,base:2,req:true},{m:R.anyprot,base:1,req:true},{m:R.cheese,base:1},{m:R.olives,base:1},{m:R.oil,base:1}]},
+  {id:'wrap',name:'Mediterranean Pita Wrap',emoji:'🌯',type:'main',roles:[
+    {m:R.bread,base:1,req:true},{m:R.anyprot,base:1,req:true},{m:R.veg,base:1},{m:R.hummus,base:1}]},
+  // snacks
+  {id:'fruit_nuts',name:'Fruit & Nuts',emoji:'🍎',type:'snack',roles:[
+    {m:R.fruit,base:1,req:true},{m:R.nuts,base:1,req:true}]},
+  {id:'yogurt_fruit',name:'Yogurt & Fruit',emoji:'🍏',type:'snack',roles:[
+    {m:R.yogurt,base:1,req:true},{m:R.fruit,base:1}]},
+  {id:'hummus_veg',name:'Hummus & Veggies',emoji:'🥕',type:'snack',roles:[
+    {m:R.hummus,base:1,req:true},{m:R.veg,base:1,req:true}]},
+  {id:'cheese_fruit',name:'Cheese & Fruit',emoji:'🧀',type:'snack',roles:[
+    {m:R.cheese,base:1,req:true},{m:R.fruit,base:1,req:true}]},
+  {id:'shake',name:'Protein Shake',emoji:'🥤',type:'snack',roles:[
+    {m:R.shake,base:1,req:true},{m:R.fruit,base:1}]}
+];
+const SLOTMETA={breakfast:{l:'Breakfast',e:'🍳'},snack1:{l:'Morning Snack',e:'🍎'},lunch:{l:'Lunch',e:'🥗'},
+  snack2:{l:'Afternoon Snack',e:'🥜'},dinner:{l:'Dinner',e:'🍽️'},snack3:{l:'Evening Snack',e:'🌙'}};
+const SLOT_ORDER=['breakfast','snack1','lunch','snack2','dinner','snack3'];
+
 function planTotals(plan){
-  return (plan.items||[]).reduce((a,i)=>({cal:a.cal+i.cal*i.servings,p:a.p+i.p*i.servings,c:a.c+i.c*i.servings,f:a.f+i.f*i.servings}),{cal:0,p:0,c:0,f:0});
+  return (plan.meals||[]).reduce((a,m)=>{
+    (m.comps||[]).forEach(c=>{a.cal+=c.cal*c.servings;a.p+=c.p*c.servings;a.c+=c.c*c.servings;a.f+=c.f*c.servings;});
+    return a;},{cal:0,p:0,c:0,f:0});
 }
-function isFavFood(name){return state.favorites.some(f=>f.name.toLowerCase()===name.toLowerCase());}
+function isFavMeal(name){return (state.favMeals||[]).some(f=>f.name===name);}
 
 function generatePlan(date){
-  const G=state.profile.goals; const targCal=G.cal||2000, targP=G.p||120;
-  const stock=state.pantry
-    .filter(x=>(x.qty||0)>0 && (x.cal||x.p||x.c||x.f))
-    .map(x=>({ref:x,name:x.name,serv:x.serv||"1 serving",cal:x.cal,p:x.p,c:x.c,f:x.f,
-              cat:foodCat(x),med:medScore(x.name),pDens:x.cal?(x.p*4)/x.cal:0,
-              cap:Math.min(Math.max(1,Math.floor(x.qty)),3),used:0}));
-  if(!stock.length)return {gen:Date.now(),items:[]};
+  const G=state.profile.goals; const targCal=G.cal||2000, targP=G.p||120, fatGoal=G.f||70;
+  const stock=state.pantry.filter(x=>(x.qty||0)>0&&(x.cal||x.p||x.c||x.f)).map(x=>({
+    name:x.name,n:x.name.toLowerCase(),serv:x.serv||'1 serving',cal:x.cal,p:x.p,c:x.c,f:x.f,
+    cat:foodCat(x),med:medScore(x.name),pDens:x.cal?(x.p*4)/x.cal:0,avail:Math.max(1,Math.floor(x.qty))}));
+  if(!stock.length)return {gen:Date.now(),meals:[]};
 
-  const totals=()=>stock.reduce((a,s)=>({cal:a.cal+s.cal*s.used,p:a.p+s.p*s.used,c:a.c+s.c*s.used,f:a.f+s.f*s.used}),{cal:0,p:0,c:0,f:0});
-  const favFirst=(a,b)=>(isFavFood(b.name)-isFavFood(a.name));
+  const dayIdx=Math.floor(new Date(date+'T00:00').getTime()/86400000);
+  const rotate=arr=>arr.length?arr.slice(dayIdx%arr.length).concat(arr.slice(0,dayIdx%arr.length)):arr;
+  const bestCand=(cands,used)=>cands.slice().sort((a,b)=>
+    ((used.has(a.name)?1:0)-(used.has(b.name)?1:0))||(b.med-a.med)||(b.pDens-a.pDens))[0];
 
-  /* 1) protein first — spread across sources (round-robin) for variety */
-  const proteins=stock.filter(s=>s.cat==='protein');
-  let guard=0;
-  while(totals().p<targP && guard++<200){
-    const pool=proteins.filter(s=>s.used<s.cap);
-    if(!pool.length)break;
-    const pick=pool.sort((a,b)=>(a.used-b.used)||favFirst(a,b)||(b.pDens-a.pDens)||(b.med-a.med))[0];
-    if(totals().cal+pick.cal>targCal+120 && totals().p>=targP*0.8)break;
-    pick.used++;
-  }
-  /* 2) fill calories with Mediterranean variety — round out fat/carbs, don't over-stack protein */
-  const fatGoal=G.f||70;
-  const fillers=stock.slice();
-  guard=0;
-  while(totals().cal<targCal-90 && guard++<400){
-    const T=totals();
-    const catUse={};stock.forEach(s=>catUse[s.cat]=(catUse[s.cat]||0)+s.used);
-    const pool=fillers.filter(s=>s.used<s.cap && T.cal+s.cal<=targCal+110
-      && !(s.cat==='protein' && T.p>=targP)); // once protein target is met, stop piling protein
-    if(!pool.length)break;
-    const pick=pool.sort((a,b)=>{
-      const fatA=(T.f<fatGoal*0.8&&a.cat==='fat')?-1:0, fatB=(T.f<fatGoal*0.8&&b.cat==='fat')?-1:0;
-      return (fatA-fatB)||((catUse[a.cat]||0)-(catUse[b.cat]||0))||favFirst(a,b)||(b.med-a.med);
-    })[0];
-    pick.used++;
-  }
-  /* build chosen list */
-  const chosen=stock.filter(s=>s.used>0);
-  return {gen:Date.now(),items:assignSlots(chosen)};
-}
-function assignSlots(chosen){
-  // candidate slots per category; servings are dealt round-robin across them
-  const slotMap={
-    protein:['lunch','dinner','breakfast'],
-    grain:['lunch','dinner'],
-    veg:['lunch','dinner'],
-    fruit:['breakfast','snack1','snack2'],
-    fat:['snack2','dinner','snack1'],
-    breakfast:['breakfast'],
-    other:['snack2','lunch']
-  };
-  const slots={breakfast:{},snack1:{},lunch:{},snack2:{},dinner:{}};
-  const catIdx={};
-  chosen.forEach(s=>{
-    const targets=slotMap[s.cat]||['lunch'];
-    for(let k=0;k<s.used;k++){
-      const idx=(catIdx[s.cat]||0);catIdx[s.cat]=idx+1;
-      const slot=targets[idx%targets.length];
-      slots[slot][s.name]=slots[slot][s.name]||{s,n:0};
-      slots[slot][s.name].n++;
+  function buildFromTpl(tpl,used){
+    const comps=[];
+    for(const role of tpl.roles){
+      const cands=stock.filter(s=>s.avail>=role.base&&role.m(s)&&!comps.some(c=>c.s===s));
+      if(!cands.length){if(role.req)return null;else continue;}
+      comps.push({s:bestCand(cands,used),servings:role.base});
     }
-  });
-  const items=[];let uid=0;
-  MEALS.forEach(m=>{
-    Object.values(slots[m.key]).forEach(({s,n})=>{
-      items.push({id:'p'+Date.now()+'_'+(uid++),name:s.name,serv:s.serv,cal:s.cal,p:s.p,c:s.c,f:s.f,servings:n,done:false,slot:m.key});
-    });
-  });
-  return items;
+    const gotReq=tpl.roles.filter(r=>r.req).every((r,idx)=>true) && tpl.roles.every(r=>!r.req||comps.some(c=>r.m(c.s)));
+    if(!gotReq)return null;
+    return {tpl,comps};
+  }
+  function buildFromFav(fav){
+    const comps=[];
+    for(const fc of fav.comps){
+      const s=stock.find(x=>x.name.toLowerCase()===fc.name.toLowerCase()&&x.avail>=1);
+      if(!s)return null;
+      comps.push({s,servings:Math.min(fc.servings||1,s.avail)});
+    }
+    return {tpl:{id:fav.id,name:fav.name,emoji:fav.emoji||'⭐',type:fav.type},comps};
+  }
+  const used=new Set(), usedTpl=new Set();
+  const commit=(meal,slot)=>{ if(!meal)return false;
+    meal.comps.forEach(c=>{c.s.avail-=c.servings;used.add(c.s.name);});
+    usedTpl.add(meal.tpl.id);
+    meal.slot=slot;meals.push(meal);return true;};
+  const meals=[];
+  function pickSlot(slot,type){
+    // favorites first
+    const favs=(state.favMeals||[]).filter(f=>f.type===type&&!usedTpl.has(f.id));
+    for(const f of favs){const m=buildFromFav(f);if(m)return commit(m,slot);}
+    const tpls=rotate(MEAL_TEMPLATES.filter(t=>t.type===type&&!usedTpl.has(t.id)));
+    for(const t of tpls){const m=buildFromTpl(t,used);if(m)return commit(m,slot);}
+    // allow template reuse if nothing else
+    for(const t of rotate(MEAL_TEMPLATES.filter(t=>t.type===type))){const m=buildFromTpl(t,used);if(m)return commit(m,slot);}
+    return false;
+  }
+  pickSlot('breakfast','breakfast');
+  pickSlot('lunch','main');
+  pickSlot('dinner','main');
+  pickSlot('snack1','snack');
+  pickSlot('snack2','snack');
+
+  if(!meals.length)return {gen:Date.now(),meals:[]};
+
+  const allComps=()=>meals.flatMap(m=>m.comps);
+  const totals=()=>planTotals({meals:meals.map(m=>({comps:m.comps.map(c=>({cal:c.s.cal,p:c.s.p,c:c.s.c,f:c.s.f,servings:c.servings}))}))});
+  const CAP=3;
+  // 1) scale protein up to target (bump protein components, favor density)
+  let guard=0;
+  while(totals().p<targP && guard++<120){
+    const cands=allComps().filter(c=>c.s.cat==='protein'&&c.servings<CAP&&c.s.avail>0);
+    if(!cands.length)break;
+    const pick=cands.sort((a,b)=>b.s.pDens-a.s.pDens)[0];
+    if(totals().cal+pick.s.cal>targCal+160&&totals().p>=targP*0.85)break;
+    pick.servings++;pick.s.avail--;
+  }
+  // 2) scale calories up with carbs/fat/veg/fruit; add an evening snack if needed
+  guard=0;
+  while(totals().cal<targCal-100&&guard++<160){
+    const T=totals();
+    const cands=allComps().filter(c=>c.s.cat!=='protein'&&c.servings<CAP&&c.s.avail>0&&T.cal+c.s.cal<=targCal+120);
+    if(!cands.length){ if(pickSlot('snack3','snack'))continue; else break; }
+    const pick=cands.sort((a,b)=>{
+      const fa=(T.f<fatGoal*0.85&&a.s.cat==='fat')?-1:0, fb=(T.f<fatGoal*0.85&&b.s.cat==='fat')?-1:0;
+      return (fa-fb)||(a.servings-b.servings)||(b.s.med-a.s.med);})[0];
+    pick.servings++;pick.s.avail--;
+  }
+  // finalize serializable structure
+  return {gen:Date.now(),meals:meals.map((m,i)=>({
+    id:'m'+Date.now()+'_'+i, slot:m.slot, name:m.tpl.name, emoji:m.tpl.emoji, type:m.tpl.type, tplId:m.tpl.id, done:false,
+    comps:m.comps.map(c=>({name:c.s.name,serv:c.s.serv,cal:c.s.cal,p:c.s.p,c:c.s.c,f:c.s.f,servings:c.servings}))
+  }))};
 }
 function ensurePlan(date){
-  if(!state.mealPlan[date]||!state.mealPlan[date].items){
-    state.mealPlan[date]=generatePlan(date);save();
-  }
+  if(!state.mealPlan[date]||!state.mealPlan[date].meals){state.mealPlan[date]=generatePlan(date);save();}
   return state.mealPlan[date];
 }
 function regeneratePlan(){
   if(!state.pantry.length){toast("Add kitchen items first 🥫");openPantry();return;}
   state.mealPlan[view.date]=generatePlan(view.date);
-  syncPlanToLog(view.date);save();renderPlanScreen();toast("Fresh plan ready 🍽️");
+  syncPlanToLog(view.date);save();renderPlanScreen();
+  if(view.date===todayStr())renderTodayLight();
+  toast("Fresh plan ready 🍽️");
 }
+function mealTotals(m){return m.comps.reduce((a,c)=>({cal:a.cal+c.cal*c.servings,p:a.p+c.p*c.servings,c:a.c+c.c*c.servings,f:a.f+c.f*c.servings}),{cal:0,p:0,c:0,f:0});}
 function renderPlanScreen(){
   paintDateNavs();
   const g=state.profile.goals;
@@ -827,53 +904,91 @@ function renderPlanScreen(){
       ring("Protein",t.p,g.p,"var(--mint)","g")+
       ring("Carbs",t.c,g.c,"var(--lav)","g")+
       ring("Fat",t.f,g.f,"var(--peach)","g")}</div>`;
-  // grouped checklist
-  let html="";
-  MEALS.forEach(m=>{
-    const items=plan.items.filter(i=>i.slot===m.key);
-    if(!items.length)return;
-    const kc=items.reduce((a,i)=>a+i.cal*i.servings,0);
-    html+=`<div class="card"><h3 style="font-size:1rem;color:var(--plum);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <span>${m.emoji} ${m.label}</span><span class="kc" style="font-size:.76rem;font-weight:800;color:var(--pink-600)">${fmt(kc)} cal</span></h3>`;
-    html+=items.map(i=>{
-      const fav=isFavFood(i.name);
-      return `<div class="plan-item ${i.done?'done':''}">
-        <div class="cb" onclick="togglePlanItem('${i.id}')">${i.done?'✓':''}</div>
-        <div class="body">
-          <div class="nm">${i.name} ${i.servings>1?'<span style="color:var(--pink-600)">×'+i.servings+'</span>':''}</div>
-          <div class="mac">${i.servings>1?i.servings+' × ':''}${i.serv} · ${fmt(i.cal*i.servings)} cal · P${fmt(i.p*i.servings)} C${fmt(i.c*i.servings)} F${fmt(i.f*i.servings)}</div>
+  const ordered=plan.meals.slice().sort((a,b)=>SLOT_ORDER.indexOf(a.slot)-SLOT_ORDER.indexOf(b.slot));
+  let html=ordered.map(m=>{
+    const mt=mealTotals(m), meta=SLOTMETA[m.slot]||{l:'Meal',e:'🍽️'}, fav=isFavMeal(m.name);
+    const ings=m.comps.map(c=>
+      `<div class="ing-line"><span>${c.emoji||''}${c.servings>1?c.servings+' × ':''}${c.serv} ${c.name}</span>
+        <span class="ing-mac">${fmt(c.cal*c.servings)} cal</span></div>`).join("");
+    return `<div class="card meal-card ${m.done?'done':''}">
+      <div class="meal-hd">
+        <div class="cb" onclick="toggleMealDone('${m.id}')">${m.done?'✓':''}</div>
+        <div style="flex:1;min-width:0">
+          <div class="meal-title">${m.emoji} ${m.name}</div>
+          <div class="meal-slot">${meta.e} ${meta.l} · ${fmt(mt.cal)} cal · ${fmt(mt.p)}g protein</div>
         </div>
-        <button class="star ${fav?'on':''}" onclick="togglePlanFav('${i.id}')" title="Add to favorite rotation">${fav?'★':'☆'}</button>
-      </div>`;
-    }).join("");
-    html+=`</div>`;
-  });
-  if(!plan.items.length){
-    html=`<div class="card empty-state"><div class="big">🤔</div>Couldn't build a plan from the current kitchen — try adding a couple of protein sources (chicken, eggs, yogurt, fish, beans).</div>`;
+        <div style="display:flex;gap:2px;flex-shrink:0">
+          <button class="micon star ${fav?'on':''}" onclick="toggleFavMeal('${m.id}')" title="Keep in rotation">${fav?'★':'☆'}</button>
+          <button class="micon" onclick="rerollMeal('${m.id}')" title="Swap this meal">🔄</button>
+        </div>
+      </div>
+      <div class="ing">${ings}</div>
+    </div>`;
+  }).join("");
+  if(!plan.meals.length){
+    html=`<div class="card empty-state"><div class="big">🤔</div>Couldn't build meals from the current kitchen — add a protein or two (chicken, eggs, Greek yogurt, fish, beans/lentils), a grain (rice, quinoa, pita), and some veg/fruit.</div>`;
   }
   document.getElementById("planList").innerHTML=html;
 }
-function togglePlanItem(id){
+function toggleMealDone(id){
   const plan=state.mealPlan[view.date];if(!plan)return;
-  const it=plan.items.find(i=>i.id===id);if(!it)return;
-  it.done=!it.done;
-  if(it.done)celebrate();
+  const m=plan.meals.find(x=>x.id===id);if(!m)return;
+  m.done=!m.done; if(m.done)celebrate();
   syncPlanToLog(view.date);save();renderPlanScreen();
   if(view.date===todayStr())renderTodayLight();
 }
-function togglePlanFav(id){
+function toggleFavMeal(id){
   const plan=state.mealPlan[view.date];if(!plan)return;
-  const it=plan.items.find(i=>i.id===id);if(!it)return;
-  const i=state.favorites.findIndex(f=>f.name.toLowerCase()===it.name.toLowerCase());
-  if(i>-1){state.favorites.splice(i,1);toast("Removed from rotation");}
-  else{state.favorites.push({name:it.name,serv:it.serv,cal:it.cal,p:it.p,c:it.c,f:it.f});toast("★ Added to your rotation — I'll favor it next time");}
+  const m=plan.meals.find(x=>x.id===id);if(!m)return;
+  state.favMeals=state.favMeals||[];
+  const i=state.favMeals.findIndex(f=>f.name===m.name);
+  if(i>-1){state.favMeals.splice(i,1);toast("Removed from rotation");}
+  else{state.favMeals.push({id:m.tplId||('fav_'+Date.now()),name:m.name,emoji:m.emoji,type:m.type,
+    comps:m.comps.map(c=>({name:c.name,serv:c.serv,cal:c.cal,p:c.p,c:c.c,f:c.f,servings:c.servings}))});
+    toast("★ Added to your rotation — I'll bring it back often");}
   save();renderPlanScreen();
 }
-/* checked plan items flow into the daily food log so Today's rings reflect them */
+function rerollMeal(id){
+  const plan=state.mealPlan[view.date];if(!plan)return;
+  const idx=plan.meals.findIndex(x=>x.id===id);if(idx<0)return;
+  const m=plan.meals[idx];
+  // build stock reflecting other meals' usage so we don't double-spend pantry
+  const spent={};
+  plan.meals.forEach((mm,k)=>{if(k!==idx)mm.comps.forEach(c=>{spent[c.name.toLowerCase()]=(spent[c.name.toLowerCase()]||0)+c.servings;});});
+  const stock=state.pantry.filter(x=>(x.qty||0)>0&&(x.cal||x.p||x.c||x.f)).map(x=>({
+    name:x.name,n:x.name.toLowerCase(),serv:x.serv||'1 serving',cal:x.cal,p:x.p,c:x.c,f:x.f,
+    cat:foodCat(x),med:medScore(x.name),pDens:x.cal?(x.p*4)/x.cal:0,
+    avail:Math.max(0,Math.floor(x.qty)-(spent[x.name.toLowerCase()]||0))}));
+  const used=new Set();
+  const tpls=MEAL_TEMPLATES.filter(t=>t.type===m.type&&t.id!==m.tplId);
+  // rotate start randomly for variety
+  const start=Math.floor(Math.random()*Math.max(1,tpls.length));
+  const order=tpls.slice(start).concat(tpls.slice(0,start));
+  const bestCand=cands=>cands.slice().sort((a,b)=>(b.med-a.med)||(b.pDens-a.pDens))[0];
+  let built=null;
+  for(const t of order){
+    const comps=[];let ok=true;
+    for(const role of t.roles){
+      const cands=stock.filter(s=>s.avail>=role.base&&role.m(s)&&!comps.some(c=>c.s===s));
+      if(!cands.length){if(role.req){ok=false;break;}else continue;}
+      comps.push({s:bestCand(cands),servings:role.base});
+    }
+    if(ok){built={tpl:t,comps};break;}
+  }
+  if(!built){toast("No other meal fits your kitchen for this slot 🤔");return;}
+  plan.meals[idx]={id:m.id,slot:m.slot,name:built.tpl.name,emoji:built.tpl.emoji,type:built.tpl.type,tplId:built.tpl.id,done:false,
+    comps:built.comps.map(c=>({name:c.s.name,serv:c.s.serv,cal:c.s.cal,p:c.s.p,c:c.s.c,f:c.s.f,servings:c.servings}))};
+  syncPlanToLog(view.date);save();renderPlanScreen();
+  if(view.date===todayStr())renderTodayLight();
+  toast("Swapped 🔄");
+}
+/* checked meals flow into the daily food log so Today's rings reflect them */
 function syncPlanToLog(date){
-  const plan=state.mealPlan[date];if(!plan){return;}
+  const plan=state.mealPlan[date];if(!plan)return;
   const manual=(state.foodLog[date]||[]).filter(f=>!f.planItem);
-  const fromPlan=plan.items.filter(i=>i.done).map(i=>({name:i.name,serv:i.serv,cal:i.cal,p:i.p,c:i.c,f:i.f,qty:i.servings,meal:i.slot,planItem:i.id}));
+  const fromPlan=[];
+  (plan.meals||[]).filter(m=>m.done).forEach(m=>m.comps.forEach(c=>
+    fromPlan.push({name:c.name,serv:c.serv,cal:c.cal,p:c.p,c:c.c,f:c.f,qty:c.servings,meal:m.slot,planItem:m.id})));
   state.foodLog[date]=[...manual,...fromPlan];
 }
 function renderTodayLight(){renderRings(todayStr());renderTodayPlan();}
@@ -1390,7 +1505,11 @@ function celebrate(){
 go('today');
 scheduleReminders();
 scheduleMondayPrompt();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{reg.update();}).catch(()=>{});
+  let _reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(_reloaded)return;_reloaded=true;location.reload();});
+}
 </script>
 </body>
 </html>
