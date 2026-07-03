@@ -1,5 +1,5 @@
 /* Bloom service worker — offline caching so the app works without internet */
-const CACHE = "bloom-v2";
+const CACHE = "bloom-v3";
 const ASSETS = [
   "./",
   "./index.html",

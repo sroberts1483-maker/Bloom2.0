@@ -16,7 +16,7 @@
     --pink-400:#ff8fc2; --pink-500:#ff7eb3; --pink-600:#ff5fa2; --pink-700:#e84d8e;
     --plum:#7a4b6b; --plum-soft:#9c6b8c; --cream:#fffafc;
     --mint:#7be0c3; --lav:#c9a7f0; --sky:#9ad4f5; --peach:#ffc59b; --water:#7cc7f5;
-    --ink:#5b3a52; --ink-soft:#8a6a82; --white:#ffffff;
+    --olive:#8ab661; --ink:#5b3a52; --ink-soft:#8a6a82; --white:#ffffff;
     --shadow:0 8px 24px rgba(255,95,162,.18); --shadow-sm:0 4px 12px rgba(255,95,162,.14);
     --radius:22px; --radius-sm:14px;
     --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
@@ -45,6 +45,7 @@
   .muted{color:var(--ink-soft);}
   .pill{display:inline-flex;align-items:center;gap:5px;background:var(--pink-100);color:var(--pink-700);
         padding:5px 12px;border-radius:999px;font-size:.78rem;font-weight:700;}
+  .pill.med{background:#eef7e4;color:#5f8c33;}
 
   .rings{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;}
   .ring-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
@@ -63,6 +64,7 @@
   input,select,textarea{font-family:inherit;width:100%;padding:12px 14px;border-radius:12px;border:2px solid var(--pink-200);
         background:var(--pink-50);font-size:.95rem;color:var(--ink);outline:none;}
   input:focus,select:focus,textarea:focus{border-color:var(--pink-400);background:#fff;}
+  textarea{min-height:120px;resize:vertical;line-height:1.5;}
   label{font-size:.8rem;font-weight:700;color:var(--plum-soft);display:block;margin:0 0 5px 2px;}
   .row{display:flex;gap:10px;}
   .row>*{flex:1;}
@@ -134,36 +136,32 @@
   .modal h3{color:var(--plum);font-size:1.2rem;margin-bottom:16px;}
   .modal .grab{width:44px;height:5px;background:var(--pink-200);border-radius:999px;margin:0 auto 16px;}
 
-  .food-result{display:flex;justify-content:space-between;align-items:center;padding:10px 4px;border-bottom:1px solid var(--pink-100);gap:8px;}
-  .food-result .nm{font-weight:700;color:var(--plum);font-size:.92rem;}
-  .food-result .acts{display:flex;gap:6px;align-items:center;flex-shrink:0;}
-  .iconbtn{width:30px;height:30px;border-radius:50%;font-size:1.15rem;font-weight:800;line-height:1;display:grid;place-items:center;}
-  .add{background:var(--pink-500);color:#fff;}
-  .star{background:var(--pink-100);color:var(--pink-600);}
-  .star.on{background:#ffe9a8;color:#e0a200;}
   .src{font-size:.64rem;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 4px;}
 
   .tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
-  .ing-chip{background:var(--pink-100);color:var(--pink-700);padding:6px 12px;border-radius:999px;font-size:.82rem;font-weight:700;display:flex;gap:6px;align-items:center;}
-  .ing-chip button{background:none;color:var(--pink-600);font-weight:800;}
-  .fav-chip{background:#fff7e6;color:#c98a00;border:2px solid #ffe9a8;padding:7px 12px;border-radius:999px;font-size:.8rem;font-weight:800;}
+  .fav-chip{background:#fff7e6;color:#c98a00;border:2px solid #ffe9a8;padding:7px 12px;border-radius:999px;font-size:.8rem;font-weight:800;display:flex;gap:6px;align-items:center;}
+  .fav-chip button{background:none;color:#c98a00;font-weight:800;}
 
   .meal-sec{border:2px solid var(--pink-100);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;}
-  .meal-sec h3{font-size:.95rem;color:var(--plum);display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+  .meal-sec h3{font-size:.95rem;color:var(--plum);display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
   .meal-sec h3 .kc{font-size:.74rem;font-weight:800;color:var(--pink-600);}
-  .meal-add{background:var(--pink-50);color:var(--pink-700);font-weight:800;width:100%;padding:9px;border-radius:10px;font-size:.82rem;border:1px dashed var(--pink-300);margin-top:6px;}
+
+  .plan-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:var(--pink-50);
+             border:2px solid var(--pink-100);margin-bottom:8px;transition:.2s;}
+  .plan-item.done{background:linear-gradient(135deg,#eafff7,#e6fbf3);border-color:var(--mint);}
+  .plan-item .cb{width:28px;height:28px;border-radius:50%;border:3px solid var(--pink-300);display:grid;place-items:center;
+                 font-size:.95rem;color:#fff;flex-shrink:0;cursor:pointer;transition:.2s;}
+  .plan-item.done .cb{background:var(--mint);border-color:var(--mint);}
+  .plan-item .body{flex:1;min-width:0;}
+  .plan-item .nm{font-weight:800;color:var(--plum);font-size:.9rem;}
+  .plan-item .mac{font-size:.72rem;color:var(--ink-soft);margin-top:2px;}
+  .plan-item .star{background:none;font-size:1.2rem;line-height:1;color:#d9c7d3;flex-shrink:0;}
+  .plan-item .star.on{color:#e0a200;}
 
   .water-cups{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0;}
   .cup{font-size:1.7rem;cursor:pointer;filter:grayscale(1);opacity:.4;transition:.15s;}
   .cup.full{filter:none;opacity:1;transform:scale(1.05);}
   .water-stat{text-align:center;font-weight:800;color:var(--water);font-size:1.1rem;}
-
-  .recipe-card{padding:14px;}
-  .recipe-card h3{color:var(--plum);font-size:1rem;margin-bottom:4px;}
-  .match-bar{height:8px;background:var(--pink-100);border-radius:999px;overflow:hidden;margin:8px 0;}
-  .match-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--pink-400));}
-  .macro-mini{display:flex;gap:10px;font-size:.74rem;font-weight:700;color:var(--ink-soft);margin-top:6px;flex-wrap:wrap;}
-  .macro-mini b{color:var(--plum);}
 
   .baby-age{background:linear-gradient(135deg,var(--sky),var(--lav));color:#fff;border-radius:var(--radius);
             padding:16px 18px;box-shadow:var(--shadow);margin-bottom:16px;display:flex;align-items:center;gap:14px;}
@@ -187,6 +185,29 @@
            font-weight:800;padding:9px 12px;border-radius:10px;font-size:.82rem;text-decoration:none;margin:4px 4px 0 0;}
   .linkbtn.gcal{background:#e8f0fe;color:#1a73e8;}
   .linkbtn.map{background:#e6fbf3;color:#1a9e76;}
+
+  /* Monday banner */
+  .banner{background:linear-gradient(135deg,var(--lav),var(--sky));color:#fff;border-radius:var(--radius);
+          padding:16px 18px;box-shadow:var(--shadow);margin-bottom:16px;}
+  .banner .big{font-weight:900;font-size:1.05rem;margin-bottom:4px;}
+  .banner .sub{font-size:.82rem;opacity:.95;margin-bottom:10px;}
+  .banner button{background:#fff;color:var(--plum);font-weight:800;padding:9px 14px;border-radius:12px;font-size:.85rem;}
+
+  /* Review coach */
+  .prompt-box{background:linear-gradient(135deg,#f7f0ff,#fff0f7);border:2px solid var(--pink-100);
+              border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:14px;}
+  .prompt-box .q{font-weight:800;color:var(--plum);font-size:.98rem;line-height:1.4;}
+  .coach-box{background:linear-gradient(135deg,#eafff7,#f0f7ff);border:2px solid var(--mint);
+             border-radius:var(--radius-sm);padding:16px;margin-top:12px;}
+  .coach-box .hd{font-weight:900;color:#2f8f6f;font-size:.9rem;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .coach-box p{font-size:.9rem;line-height:1.55;color:var(--ink);margin:0 0 10px;}
+  .coach-box ul{margin:6px 0 0;padding-left:20px;}
+  .coach-box li{font-size:.86rem;line-height:1.5;color:var(--ink);margin-bottom:6px;}
+  .mood-row{display:flex;gap:8px;justify-content:space-between;margin:6px 0 4px;}
+  .mood-row button{flex:1;background:var(--pink-50);border:2px solid var(--pink-100);border-radius:12px;padding:10px 0;font-size:1.4rem;}
+  .mood-row button.on{background:var(--pink-100);border-color:var(--pink-400);transform:scale(1.05);}
+  .review-past{border-left:3px solid var(--pink-200);padding:8px 0 8px 12px;margin-bottom:12px;}
+  .review-past .wk{font-weight:800;color:var(--pink-700);font-size:.78rem;}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -199,6 +220,7 @@
 
   <!-- ============ TODAY ============ -->
   <section id="screen-today" class="screen active">
+    <div id="mondayBanner"></div>
     <div class="streak">
       <div class="lbl">Workout streak</div>
       <div class="big"><span id="streakDays">0</span> days</div>
@@ -207,6 +229,10 @@
     <div class="card">
       <h2>🍓 Today's Nutrition</h2>
       <div class="rings" id="macroRings"></div>
+    </div>
+    <div class="card">
+      <h2>🍽️ Today's Meal Plan</h2>
+      <div id="todayPlan"></div>
     </div>
     <div class="card">
       <h2>💧 Water</h2>
@@ -226,39 +252,21 @@
     </div>
   </section>
 
-  <!-- ============ FOOD ============ -->
-  <section id="screen-food" class="screen">
-    <div class="datenav" id="foodDateNav"></div>
+  <!-- ============ MEAL PLAN ============ -->
+  <section id="screen-plan" class="screen">
+    <div class="datenav" id="planDateNav"></div>
     <div class="card">
-      <h2>🍽️ Add Food</h2>
-      <p class="muted" style="font-size:.8rem;margin:-6px 0 10px;">Adding to: <b id="mealTargetLbl" style="color:var(--pink-700)"></b> — tap a meal below to change.</p>
-      <input id="foodSearch" placeholder="Search food (chicken, oats, banana…)" oninput="searchFood()" />
-      <div id="foodResults" style="margin-top:6px;"></div>
-      <button class="btn-ghost" style="margin-top:10px;width:100%" onclick="openCustomFood()">➕ Add custom food</button>
-    </div>
-    <div class="card" id="favCard" style="display:none">
-      <h2>⭐ Your Saved Foods</h2>
-      <p class="muted" style="font-size:.78rem;margin:-6px 0 8px;">Tap to quick-add to <b id="mealTargetLbl2" style="color:var(--pink-700)"></b>.</p>
-      <div class="tag-list" id="favList"></div>
-    </div>
-    <div class="card">
-      <h2>📋 Daily Log <span class="pill" id="foodKcal">0 kcal</span></h2>
-      <div id="foodLogList"></div>
-    </div>
-  </section>
-
-  <!-- ============ MEALS ============ -->
-  <section id="screen-meals" class="screen">
-    <div class="card">
-      <h2>🥗 What can I make?</h2>
-      <p class="muted" style="font-size:.85rem;margin:0 0 10px;">Add ingredients you have — I'll suggest meals you can make right now. Star ⭐ items you buy often.</p>
-      <div class="row">
-        <input id="ingInput" placeholder="e.g. eggs, spinach…" onkeydown="if(event.key==='Enter')addIngredient()" />
-        <button class="btn-mini" style="flex:0 0 auto;padding:12px 16px" onclick="addIngredient()">Add</button>
+      <h2>🍽️ Auto Meal Plan <span class="pill med">Mediterranean</span></h2>
+      <p class="muted" style="font-size:.82rem;margin:-6px 0 12px;">Built from your kitchen to hit
+        <b style="color:var(--pink-700)"><span id="planGoalCal">2000</span> cal</b> &amp;
+        <b style="color:var(--pink-700)"><span id="planGoalP">120</span> g protein</b>. Check off each item as you eat it. ✨</p>
+      <div id="planSummary"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn-ghost" style="flex:1" onclick="regeneratePlan()">🔄 Regenerate</button>
+        <button class="btn-ghost" style="flex:1" onclick="openPantry()">🥫 Edit kitchen</button>
       </div>
-      <div class="tag-list" id="ingList"></div>
     </div>
-    <div id="recipeResults"></div>
+    <div id="planList"></div>
   </section>
 
   <!-- ============ WORKOUTS ============ -->
@@ -309,15 +317,34 @@
       <p class="muted" style="font-size:.74rem;margin:0;">💡 These are general, play-based ideas for fun and bonding — every child grows at their own pace. For milestone concerns, your pediatrician is the best guide.</p>
     </div>
   </section>
+
+  <!-- ============ WEEKLY REVIEW ============ -->
+  <section id="screen-review" class="screen">
+    <div class="card">
+      <h2>📝 Weekly Reflection</h2>
+      <p class="muted" style="font-size:.82rem;margin:-6px 0 12px;">Week of <b id="reviewWeekLbl" style="color:var(--pink-700)"></b>. Take a few minutes to check in with yourself. 💗</p>
+      <div class="prompt-box"><div class="q" id="reviewPrompt"></div></div>
+      <label>Your reflection</label>
+      <textarea id="reviewText" placeholder="How did this week feel? What went well, what was hard, what do you want to carry forward?"></textarea>
+      <label style="margin-top:12px">How are you feeling overall?</label>
+      <div class="mood-row" id="moodRow"></div>
+      <button class="btn" style="margin-top:14px" onclick="submitReview()">💌 Save &amp; get encouragement</button>
+      <div id="coachOut"></div>
+    </div>
+    <div class="card" id="pastReviewsCard" style="display:none">
+      <h2>🌱 Past reflections</h2>
+      <div id="pastReviews"></div>
+    </div>
+  </section>
 </div>
 
 <nav class="nav">
   <button id="nav-today" class="active" onclick="go('today')"><span class="ic">🏠</span>Today</button>
-  <button id="nav-food" onclick="go('food')"><span class="ic">🍓</span>Food</button>
-  <button id="nav-meals" onclick="go('meals')"><span class="ic">🥗</span>Meals</button>
+  <button id="nav-plan" onclick="go('plan')"><span class="ic">🍽️</span>Plan</button>
   <button id="nav-workouts" onclick="go('workouts')"><span class="ic">💪</span>Move</button>
   <button id="nav-calendar" onclick="go('calendar')"><span class="ic">📅</span>Cal</button>
   <button id="nav-baby" onclick="go('baby')"><span class="ic">🧸</span>Lucas</button>
+  <button id="nav-review" onclick="go('review')"><span class="ic">📝</span>Review</button>
 </nav>
 
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
@@ -336,77 +363,108 @@ const todayStr=()=>dstr(new Date());
 const fmt=n=>Math.round(n);
 const titleCase=s=>s.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
 
-/* ---------- Meals ---------- */
+/* ---------- Meal slots ---------- */
 const MEALS=[
   {key:'breakfast',label:'Breakfast',emoji:'🍳'},
   {key:'snack1',label:'Morning Snack',emoji:'🍎'},
-  {key:'lunch',label:'Lunch',emoji:'🥪'},
-  {key:'snack2',label:'Afternoon Snack',emoji:'🥨'},
-  {key:'dinner',label:'Dinner',emoji:'🍽️'}
+  {key:'lunch',label:'Lunch',emoji:'🥗'},
+  {key:'snack2',label:'Afternoon Snack',emoji:'🥜'},
+  {key:'dinner',label:'Dinner',emoji:'🐟'}
 ];
-const mealByHour=()=>{const h=new Date().getHours();
-  if(h<10)return'breakfast';if(h<12)return'snack1';if(h<15)return'lunch';if(h<17)return'snack2';return'dinner';};
 const mealLabel=k=>{const m=MEALS.find(x=>x.key===k);return m?m.emoji+' '+m.label:'Meal';};
 
-/* ---------- Built-in food / macro database (fallback + instant) ---------- */
+/* ---------- Built-in food / macro database (Mediterranean-leaning) ---------- */
 const FOOD_DB=[
   {name:"Chicken breast (grilled)",serv:"100 g",cal:165,p:31,c:0,f:3.6},
+  {name:"Chicken thigh (cooked)",serv:"100 g",cal:209,p:26,c:0,f:10.9},
   {name:"Ground beef 90/10 (cooked)",serv:"100 g",cal:217,p:26,c:0,f:12},
   {name:"Salmon (baked)",serv:"100 g",cal:206,p:22,c:0,f:13},
+  {name:"Cod (baked)",serv:"100 g",cal:105,p:23,c:0,f:0.9},
+  {name:"Tuna (canned in water)",serv:"1 can",cal:142,p:33,c:0,f:1},
+  {name:"Sardines (canned)",serv:"1 can",cal:191,p:23,c:0,f:11},
+  {name:"Shrimp (cooked)",serv:"100 g",cal:99,p:24,c:0.2,f:0.3},
   {name:"Eggs (large)",serv:"1 egg",cal:72,p:6.3,c:0.4,f:5},
   {name:"Egg whites",serv:"1 cup",cal:117,p:26,c:1.6,f:0.4},
   {name:"Greek yogurt (nonfat)",serv:"1 cup",cal:130,p:22,c:9,f:0.7},
+  {name:"Cottage cheese (low-fat)",serv:"1 cup",cal:163,p:28,c:6,f:2.3},
+  {name:"Feta cheese",serv:"1 oz",cal:75,p:4,c:1.2,f:6},
+  {name:"Tofu (firm)",serv:"100 g",cal:144,p:17,c:3,f:9},
+  {name:"Lentils (cooked)",serv:"1 cup",cal:230,p:18,c:40,f:0.8},
+  {name:"Chickpeas (cooked)",serv:"1 cup",cal:269,p:14.5,c:45,f:4.2},
+  {name:"Black beans (cooked)",serv:"1 cup",cal:227,p:15,c:41,f:0.9},
+  {name:"Hummus",serv:"2 tbsp",cal:70,p:2,c:6,f:5},
   {name:"Oats (dry)",serv:"1/2 cup",cal:150,p:5,c:27,f:3},
-  {name:"White rice (cooked)",serv:"1 cup",cal:205,p:4.3,c:45,f:0.4},
+  {name:"Quinoa (cooked)",serv:"1 cup",cal:222,p:8,c:39,f:3.6},
+  {name:"Farro (cooked)",serv:"1 cup",cal:200,p:7,c:44,f:1.5},
+  {name:"Bulgur (cooked)",serv:"1 cup",cal:151,p:5.6,c:34,f:0.4},
+  {name:"Couscous (cooked)",serv:"1 cup",cal:176,p:6,c:36,f:0.3},
   {name:"Brown rice (cooked)",serv:"1 cup",cal:218,p:5,c:46,f:1.6},
+  {name:"White rice (cooked)",serv:"1 cup",cal:205,p:4.3,c:45,f:0.4},
+  {name:"Whole wheat pita",serv:"1 pita",cal:170,p:6,c:35,f:1.7},
+  {name:"Whole grain pasta (cooked)",serv:"1 cup",cal:180,p:8,c:37,f:1.5},
+  {name:"Whole wheat bread",serv:"1 slice",cal:80,p:4,c:14,f:1},
   {name:"Sweet potato (baked)",serv:"1 medium",cal:103,p:2.3,c:24,f:0.2},
+  {name:"Spinach (raw)",serv:"1 cup",cal:7,p:0.9,c:1.1,f:0.1},
+  {name:"Kale (cooked)",serv:"1 cup",cal:36,p:2.9,c:6,f:0.5},
+  {name:"Broccoli (cooked)",serv:"1 cup",cal:55,p:3.7,c:11,f:0.6},
+  {name:"Bell pepper",serv:"1 medium",cal:31,p:1,c:7,f:0.3},
+  {name:"Tomato",serv:"1 medium",cal:22,p:1.1,c:4.8,f:0.2},
+  {name:"Cherry tomatoes",serv:"1 cup",cal:27,p:1.3,c:6,f:0.3},
+  {name:"Cucumber",serv:"1 cup",cal:16,p:0.7,c:3.8,f:0.1},
+  {name:"Eggplant (cooked)",serv:"1 cup",cal:35,p:0.8,c:8.6,f:0.2},
+  {name:"Zucchini (cooked)",serv:"1 cup",cal:27,p:2,c:5,f:0.5},
+  {name:"Carrots (raw)",serv:"1 cup",cal:52,p:1.2,c:12,f:0.3},
+  {name:"Avocado",serv:"1/2 fruit",cal:120,p:1.5,c:6,f:11},
+  {name:"Olives",serv:"10 olives",cal:50,p:0.4,c:2.7,f:4.6},
+  {name:"Olive oil",serv:"1 tbsp",cal:119,p:0,c:0,f:14},
+  {name:"Almonds",serv:"1 oz (23)",cal:164,p:6,c:6,f:14},
+  {name:"Walnuts",serv:"1 oz",cal:185,p:4.3,c:3.9,f:18.5},
+  {name:"Pistachios",serv:"1 oz",cal:159,p:5.7,c:8,f:12.8},
+  {name:"Peanut butter",serv:"2 tbsp",cal:188,p:8,c:6,f:16},
   {name:"Banana",serv:"1 medium",cal:105,p:1.3,c:27,f:0.4},
   {name:"Apple",serv:"1 medium",cal:95,p:0.5,c:25,f:0.3},
+  {name:"Orange",serv:"1 medium",cal:62,p:1.2,c:15,f:0.2},
   {name:"Blueberries",serv:"1 cup",cal:84,p:1.1,c:21,f:0.5},
   {name:"Strawberries",serv:"1 cup",cal:49,p:1,c:12,f:0.5},
-  {name:"Spinach (raw)",serv:"1 cup",cal:7,p:0.9,c:1.1,f:0.1},
-  {name:"Broccoli (cooked)",serv:"1 cup",cal:55,p:3.7,c:11,f:0.6},
-  {name:"Avocado",serv:"1/2 fruit",cal:120,p:1.5,c:6,f:11},
-  {name:"Almonds",serv:"1 oz (23)",cal:164,p:6,c:6,f:14},
-  {name:"Peanut butter",serv:"2 tbsp",cal:188,p:8,c:6,f:16},
-  {name:"Whole wheat bread",serv:"1 slice",cal:80,p:4,c:14,f:1},
-  {name:"Pasta (cooked)",serv:"1 cup",cal:221,p:8,c:43,f:1.3},
-  {name:"Cheddar cheese",serv:"1 oz",cal:113,p:7,c:0.4,f:9},
+  {name:"Grapes",serv:"1 cup",cal:104,p:1.1,c:27,f:0.2},
   {name:"Milk 2%",serv:"1 cup",cal:122,p:8,c:12,f:4.8},
+  {name:"Cheddar cheese",serv:"1 oz",cal:113,p:7,c:0.4,f:9},
   {name:"Protein shake (whey)",serv:"1 scoop",cal:120,p:24,c:3,f:1.5},
-  {name:"Cottage cheese (low-fat)",serv:"1 cup",cal:163,p:28,c:6,f:2.3},
-  {name:"Black beans (cooked)",serv:"1 cup",cal:227,p:15,c:41,f:0.9},
-  {name:"Quinoa (cooked)",serv:"1 cup",cal:222,p:8,c:39,f:3.6},
-  {name:"Tuna (canned in water)",serv:"1 can",cal:142,p:33,c:0,f:1},
-  {name:"Shrimp (cooked)",serv:"100 g",cal:99,p:24,c:0.2,f:0.3},
-  {name:"Tofu (firm)",serv:"100 g",cal:144,p:17,c:3,f:9},
-  {name:"Olive oil",serv:"1 tbsp",cal:119,p:0,c:0,f:14},
-  {name:"Honey",serv:"1 tbsp",cal:64,p:0,c:17,f:0},
-  {name:"Coffee (black)",serv:"1 cup",cal:2,p:0.3,c:0,f:0},
-  {name:"Orange",serv:"1 medium",cal:62,p:1.2,c:15,f:0.2},
-  {name:"Carrots (raw)",serv:"1 cup",cal:52,p:1.2,c:12,f:0.3},
-  {name:"Bell pepper",serv:"1 medium",cal:31,p:1,c:7,f:0.3},
   {name:"Turkey breast (deli)",serv:"2 oz",cal:60,p:11,c:2,f:1},
-  {name:"Bagel (plain)",serv:"1 medium",cal:245,p:10,c:48,f:1.5},
-  {name:"Dark chocolate 70%",serv:"1 oz",cal:170,p:2,c:13,f:12},
-  {name:"Rice cakes",serv:"1 cake",cal:35,p:0.7,c:7.3,f:0.3}
+  {name:"Honey",serv:"1 tbsp",cal:64,p:0,c:17,f:0}
 ];
+function dbLookup(name){
+  const n=name.toLowerCase().trim();
+  return FOOD_DB.find(f=>f.name.toLowerCase()===n)
+      || FOOD_DB.find(f=>f.name.toLowerCase().includes(n)||n.includes(f.name.toLowerCase().split(' (')[0]));
+}
 
-/* ---------- Recipes ---------- */
-const RECIPES=[
-  {name:"Protein Veggie Scramble",emoji:"🍳",ing:["eggs","spinach","bell pepper","cheese"],cal:340,p:26,c:8,f:23,steps:"Scramble eggs with chopped spinach & peppers, top with cheese."},
-  {name:"Greek Yogurt Berry Bowl",emoji:"🍓",ing:["greek yogurt","blueberries","strawberries","honey","almonds"],cal:300,p:24,c:38,f:8,steps:"Layer yogurt with berries, drizzle honey, sprinkle almonds."},
-  {name:"Chicken & Rice Power Plate",emoji:"🍗",ing:["chicken breast","rice","broccoli","olive oil"],cal:520,p:48,c:52,f:12,steps:"Grill chicken, serve over rice with steamed broccoli + olive oil."},
-  {name:"Salmon Sweet Potato Bowl",emoji:"🐟",ing:["salmon","sweet potato","spinach","avocado"],cal:540,p:34,c:35,f:28,steps:"Bake salmon & sweet potato, plate over spinach with avocado."},
-  {name:"Overnight Oats",emoji:"🥣",ing:["oats","milk","banana","peanut butter","honey"],cal:430,p:16,c:62,f:15,steps:"Mix oats + milk overnight, top with banana & peanut butter."},
-  {name:"Tuna Protein Wrap",emoji:"🌯",ing:["tuna","whole wheat bread","spinach","avocado"],cal:380,p:38,c:30,f:12,steps:"Mash tuna with avocado, wrap with spinach in bread/tortilla."},
-  {name:"Tofu Veggie Stir-Fry",emoji:"🥦",ing:["tofu","broccoli","bell pepper","rice","olive oil"],cal:450,p:22,c:55,f:16,steps:"Stir-fry tofu & veggies in oil, serve over rice."},
-  {name:"Beef & Black Bean Bowl",emoji:"🌶️",ing:["ground beef","black beans","rice","cheese"],cal:610,p:42,c:55,f:24,steps:"Brown beef, combine with beans & rice, top with cheese."},
-  {name:"Cottage Cheese Toast",emoji:"🍞",ing:["cottage cheese","whole wheat bread","strawberries"],cal:260,p:22,c:30,f:5,steps:"Spread cottage cheese on toast, top with sliced strawberries."},
-  {name:"Shrimp Quinoa Bowl",emoji:"🍤",ing:["shrimp","quinoa","spinach","avocado","olive oil"],cal:480,p:34,c:42,f:18,steps:"Sauté shrimp, serve over quinoa & spinach with avocado."},
-  {name:"PB Banana Protein Shake",emoji:"🥤",ing:["protein shake","banana","peanut butter","milk"],cal:430,p:34,c:38,f:16,steps:"Blend protein, banana, PB and milk with ice."},
-  {name:"Turkey Cheese Bagel",emoji:"🥯",ing:["bagel","turkey breast","cheese","spinach"],cal:430,p:30,c:50,f:12,steps:"Layer turkey, cheese & spinach on a toasted bagel."}
-];
+/* Mediterranean starter kitchen (one-tap load) */
+const STARTER_PANTRY=[
+  "Greek yogurt (nonfat)","Eggs (large)","Chicken breast (grilled)","Salmon (baked)","Tuna (canned in water)",
+  "Chickpeas (cooked)","Lentils (cooked)","Quinoa (cooked)","Whole wheat pita","Olive oil","Feta cheese",
+  "Spinach (raw)","Tomato","Cucumber","Bell pepper","Broccoli","Avocado","Almonds","Walnuts","Hummus",
+  "Blueberries","Banana","Apple","Oats (dry)","Brown rice (cooked)"
+].map(nm=>{const d=dbLookup(nm);return {name:d.name,serv:d.serv,cal:d.cal,p:d.p,c:d.c,f:d.f,qty:6};});
+
+/* ---------- Meal-plan food categorization + scoring ---------- */
+const MED_FOODS=["olive oil","salmon","tuna","sardine","cod","shrimp","mackerel","trout","chickpea","lentil","bean","hummus","feta","greek yogurt","yogurt","quinoa","oats","farro","bulgur","couscous","whole wheat","whole grain","pita","spinach","kale","tomato","cucumber","pepper","broccoli","eggplant","zucchini","onion","garlic","olive","avocado","almond","walnut","pistachio","nut","apple","orange","banana","berr","grape","fig","egg","chicken","cottage cheese","brown rice"];
+const NON_MED=["bacon","sausage","hot dog","candy","soda","white bread","bagel","fried","donut","pastr","ground beef 90"];
+function medScore(name){const n=name.toLowerCase();let s=0;if(MED_FOODS.some(k=>n.includes(k)))s+=2;if(NON_MED.some(k=>n.includes(k)))s-=3;return s;}
+function foodCat(f){
+  const n=f.name.toLowerCase();
+  const pDens=f.cal?(f.p*4)/f.cal:0, cDens=f.cal?(f.c*4)/f.cal:0, fDens=f.cal?(f.f*9)/f.cal:0;
+  if(/apple|banana|orange|berr|grape|melon|peach|pear|fig|fruit/.test(n))return 'fruit';
+  if(/oat|granola|cereal|pancake/.test(n))return 'breakfast';
+  if(/spinach|kale|broccoli|pepper|tomato|cucumber|carrot|zucchini|eggplant|salad|greens|lettuce|onion|veg/.test(n))return 'veg';
+  if(/chicken|salmon|tuna|beef|turkey|shrimp|tofu|fish|cod|sardine|egg|yogurt|cottage|protein|bean|lentil|chickpea/.test(n))return 'protein';
+  if(/rice|quinoa|pasta|farro|bulgur|couscous|bread|pita|potato|grain/.test(n))return 'grain';
+  if(/oil|almond|walnut|pistachio|nut|avocado|olive|butter|cheese/.test(n))return 'fat';
+  if(pDens>=0.35&&f.p>=8)return 'protein';
+  if(fDens>=0.5)return 'fat';
+  if(cDens>=0.5)return 'grain';
+  return 'veg';
+}
 
 /* ---------- Workouts ---------- */
 const WORKOUTS={
@@ -498,18 +556,35 @@ const BABY_BANDS=[
   ]}
 ];
 
+/* ---------- Weekly reflection prompts ---------- */
+const REVIEW_PROMPTS=[
+  "What's one thing your body did for you this week that you're grateful for?",
+  "Where did you feel most energized this week — and what made that possible?",
+  "What drained you this week, and what's one small boundary that could protect your energy next week?",
+  "How did you nourish yourself this week — with food, rest, or movement? What felt good?",
+  "What's a moment this week you felt proud of, even a tiny one?",
+  "How did you handle stress this week? What helped you reset?",
+  "What did your sleep and rest look like, and how did it affect the rest of your days?",
+  "Which relationships or moments filled your cup this week?",
+  "What's one habit you want to be gentler about, and one you want to lean into next week?",
+  "If next week could feel one specific way, what word would you choose — and what would help you get there?",
+  "What did movement feel like in your body this week? Playful, hard, skipped, energizing?",
+  "What's something you learned about yourself this week?"
+];
+
 /* ---------- State ---------- */
 const DEFAULT_STATE={
-  profile:{name:"",goals:{cal:1800,p:130,c:170,f:55},waterGoal:64,sonName:"Lucas",sonDob:"2025-04-17",usdaKey:""},
-  foodLog:{}, workoutLog:{}, events:[], ingredients:[], favorites:[], water:{}, babyLog:{}
+  profile:{name:"",goals:{cal:2000,p:120,c:220,f:70},waterGoal:64,sonName:"Lucas",sonDob:"2025-04-17",openaiKey:""},
+  foodLog:{}, workoutLog:{}, events:[], favorites:[], water:{}, babyLog:{},
+  pantry:[], mealPlan:{}, reviews:{}
 };
 let state=load();
-let view={month:new Date().getMonth(),year:new Date().getFullYear(),workoutTab:"strength",date:todayStr(),meal:mealByHour()};
+let view={month:new Date().getMonth(),year:new Date().getFullYear(),workoutTab:"strength",date:todayStr()};
 
 function load(){
   try{const s=JSON.parse(localStorage.getItem("bloom_state"));
     if(!s)return structuredClone(DEFAULT_STATE);
-    return {...structuredClone(DEFAULT_STATE),...s,profile:{...DEFAULT_STATE.profile,...(s.profile||{})}};}
+    return {...structuredClone(DEFAULT_STATE),...s,profile:{...DEFAULT_STATE.profile,...(s.profile||{}),goals:{...DEFAULT_STATE.profile.goals,...((s.profile||{}).goals||{})}}};}
   catch(e){return structuredClone(DEFAULT_STATE);}
 }
 function save(){localStorage.setItem("bloom_state",JSON.stringify(state));}
@@ -522,11 +597,11 @@ function go(screen){
   document.getElementById("nav-"+screen).classList.add("active");
   window.scrollTo(0,0);
   if(screen==="today")renderToday();
-  if(screen==="food")renderFoodScreen();
-  if(screen==="meals")renderRecipes();
+  if(screen==="plan")renderPlanScreen();
   if(screen==="workouts")renderWorkouts();
   if(screen==="calendar")renderCalendar();
   if(screen==="baby")renderBaby();
+  if(screen==="review")renderReview();
 }
 
 /* ---------- Date navigator (shared) ---------- */
@@ -539,14 +614,14 @@ function dateNavHTML(){
     <button class="arr" onclick="shiftDate(1)">›</button>`;
 }
 function paintDateNavs(){
-  ["foodDateNav","moveDateNav","babyDateNav"].forEach(id=>{const el=document.getElementById(id);if(el){el.innerHTML=dateNavHTML();el.onclick=e=>{if(e.target.classList.contains('lbl')||e.target.tagName==='SMALL'){jumpToday();}};}});
+  ["planDateNav","moveDateNav","babyDateNav"].forEach(id=>{const el=document.getElementById(id);if(el){el.innerHTML=dateNavHTML();el.onclick=e=>{if(e.target.classList.contains('lbl')||e.target.tagName==='SMALL'){jumpToday();}};}});
 }
 function shiftDate(n){const d=new Date(view.date+"T00:00");d.setDate(d.getDate()+n);view.date=dstr(d);refreshDated();}
 function jumpToday(){view.date=todayStr();refreshDated();}
 function refreshDated(){
   const active=document.querySelector(".screen.active").id;
   paintDateNavs();
-  if(active==="screen-food")renderFoodScreen();
+  if(active==="screen-plan")renderPlanScreen();
   if(active==="screen-workouts")renderWorkouts();
   if(active==="screen-baby")renderBaby();
 }
@@ -556,11 +631,13 @@ function renderToday(){
   const h=new Date().getHours();
   const name=state.profile.name?", "+state.profile.name:"";
   document.getElementById("greet").textContent=(h<12?"Good morning":h<18?"Good afternoon":"Good evening")+name;
+  renderMondayBanner();
   const streak=calcStreak();
   document.getElementById("streakDays").textContent=streak;
   document.getElementById("streakMsg").textContent=
     streak===0?"Let's get moving today! 💪":streak<3?"Great start — keep it going! 🌱":streak<7?"You're on a roll! 🌸":"Incredible consistency! 👑";
   renderRings(todayStr());
+  renderTodayPlan();
   renderWater("waterToday",todayStr());
   renderTodayWorkouts();
   renderTodayBaby();
@@ -588,6 +665,23 @@ function renderRings(date){
     ring("Carbs",t.c,g.c,"var(--lav)","g")+
     ring("Fat",t.f,g.f,"var(--peach)","g");
 }
+function renderTodayPlan(){
+  const plan=state.mealPlan[todayStr()];
+  const box=document.getElementById("todayPlan");
+  if(!state.pantry.length){
+    box.innerHTML=`<div class="empty-state" style="padding:14px"><div class="big">🥫</div>Add what's in your kitchen to auto-build a plan.
+      <div style="margin-top:10px"><button class="btn-mini" onclick="openPantry()">Set up kitchen</button></div></div>`;return;
+  }
+  if(!plan||!plan.items.length){
+    box.innerHTML=`<div class="item"><div><div style="font-weight:800;color:var(--plum)">No plan yet for today</div>
+      <div class="meta">Auto-build from your kitchen</div></div>
+      <button class="btn-mini" onclick="go('plan')">Open 🍽️</button></div>`;return;
+  }
+  const done=plan.items.filter(i=>i.done).length;
+  box.innerHTML=`<div class="item"><div><div style="font-weight:800;color:var(--plum)">${done} of ${plan.items.length} items eaten</div>
+    <div class="meta">Planned: ${fmt(planTotals(plan).cal)} cal · ${fmt(planTotals(plan).p)}g protein</div></div>
+    <button class="btn-mini" onclick="go('plan')">Open 🍽️</button></div>`;
+}
 function renderTodayWorkouts(){
   const done=state.workoutLog[todayStr()]||[];const all=[...WORKOUTS.strength,...WORKOUTS.cardio];
   let html=done.map(id=>{const w=all.find(x=>x.id===id);if(!w)return"";
@@ -613,120 +707,176 @@ function renderTodayEvents(){
     <div class="meta">${e.time||"All day"}</div></div>`).join("")
     :`<div class="empty-state"><div class="big">🗓️</div>Nothing scheduled today.</div>`;
 }
+function renderMondayBanner(){
+  const box=document.getElementById("mondayBanner");if(!box)return;
+  const isMon=new Date().getDay()===1;
+  const wk=weekStart(todayStr());
+  const doneThisWeek=state.reviews[wk]&&state.reviews[wk].reflection;
+  if(isMon&&!doneThisWeek){
+    box.innerHTML=`<div class="banner"><div class="big">🌱 Happy Monday${state.profile.name?', '+state.profile.name:''}!</div>
+      <div class="sub">A fresh week is here. Take a moment for your weekly reflection — I'll share some encouragement for the week ahead.</div>
+      <button onclick="go('review')">Start weekly review →</button></div>`;
+  } else box.innerHTML="";
+}
 
-/* ---------- FOOD ---------- */
-function renderFoodScreen(){paintDateNavs();setMealLabels();renderFavs();renderFoodLog();}
-function setMeal(k){view.meal=k;setMealLabels();searchFood();toast("Adding to "+mealLabel(k));}
-function setMealLabels(){
-  const l=mealLabel(view.meal);
-  ["mealTargetLbl","mealTargetLbl2"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=l;});
+/* ---------- MEAL PLAN ---------- */
+function planTotals(plan){
+  return (plan.items||[]).reduce((a,i)=>({cal:a.cal+i.cal*i.servings,p:a.p+i.p*i.servings,c:a.c+i.c*i.servings,f:a.f+i.f*i.servings}),{cal:0,p:0,c:0,f:0});
 }
-let usdaTimer;
-function searchFood(){
-  const q=document.getElementById("foodSearch").value.trim();
-  const box=document.getElementById("foodResults");
-  if(!q){box.innerHTML="";return;}
-  const ql=q.toLowerCase();
-  const local=FOOD_DB.filter(f=>f.name.toLowerCase().includes(ql)).slice(0,6);
-  box.innerHTML=(local.length?`<div class="src">Quick picks</div>`+local.map(f=>foodRow(f)).join(""):"")
-    +`<div class="src" id="usdaHdr">Searching USDA database… 🌐</div><div id="usdaResults"></div>`;
-  clearTimeout(usdaTimer);
-  usdaTimer=setTimeout(()=>usdaSearch(q),450);
-}
-async function usdaSearch(q){
-  const hdr=document.getElementById("usdaHdr");
-  try{
-    const key=state.profile.usdaKey||"DEMO_KEY";
-    const url=`https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(q)}&pageSize=12&dataType=Foundation,SR%20Legacy,Branded&api_key=${key}`;
-    const r=await fetch(url);if(!r.ok)throw new Error("bad");
-    const j=await r.json();
-    const foods=(j.foods||[]).map(f=>{
-      const get=num=>{const x=(f.foodNutrients||[]).find(z=>String(z.nutrientNumber)===num);return x&&x.value?x.value:0;};
-      return {name:titleCase((f.brandName?f.brandName+" ":"")+f.description),serv:"100 g",cal:get('208'),p:get('203'),c:get('205'),f:get('204'),usda:true};
-    }).filter(f=>f.cal||f.p||f.c||f.f);
-    if(hdr)hdr.textContent="From USDA database 🌐";
-    document.getElementById("usdaResults").innerHTML=foods.length?foods.map(f=>foodRow(f)).join(""):`<p class="muted" style="padding:8px;font-size:.82rem">No extra results — use a quick pick or add custom.</p>`;
-  }catch(e){
-    if(hdr)hdr.textContent="USDA database unavailable (offline or rate-limited) — quick picks & custom still work.";
-    const ur=document.getElementById("usdaResults");if(ur)ur.innerHTML="";
+function isFavFood(name){return state.favorites.some(f=>f.name.toLowerCase()===name.toLowerCase());}
+
+function generatePlan(date){
+  const G=state.profile.goals; const targCal=G.cal||2000, targP=G.p||120;
+  const stock=state.pantry
+    .filter(x=>(x.qty||0)>0 && (x.cal||x.p||x.c||x.f))
+    .map(x=>({ref:x,name:x.name,serv:x.serv||"1 serving",cal:x.cal,p:x.p,c:x.c,f:x.f,
+              cat:foodCat(x),med:medScore(x.name),pDens:x.cal?(x.p*4)/x.cal:0,
+              cap:Math.min(Math.max(1,Math.floor(x.qty)),3),used:0}));
+  if(!stock.length)return {gen:Date.now(),items:[]};
+
+  const totals=()=>stock.reduce((a,s)=>({cal:a.cal+s.cal*s.used,p:a.p+s.p*s.used,c:a.c+s.c*s.used,f:a.f+s.f*s.used}),{cal:0,p:0,c:0,f:0});
+  const favFirst=(a,b)=>(isFavFood(b.name)-isFavFood(a.name));
+
+  /* 1) protein first — spread across sources (round-robin) for variety */
+  const proteins=stock.filter(s=>s.cat==='protein');
+  let guard=0;
+  while(totals().p<targP && guard++<200){
+    const pool=proteins.filter(s=>s.used<s.cap);
+    if(!pool.length)break;
+    const pick=pool.sort((a,b)=>(a.used-b.used)||favFirst(a,b)||(b.pDens-a.pDens)||(b.med-a.med))[0];
+    if(totals().cal+pick.cal>targCal+120 && totals().p>=targP*0.8)break;
+    pick.used++;
   }
+  /* 2) fill calories with Mediterranean variety — round out fat/carbs, don't over-stack protein */
+  const fatGoal=G.f||70;
+  const fillers=stock.slice();
+  guard=0;
+  while(totals().cal<targCal-90 && guard++<400){
+    const T=totals();
+    const catUse={};stock.forEach(s=>catUse[s.cat]=(catUse[s.cat]||0)+s.used);
+    const pool=fillers.filter(s=>s.used<s.cap && T.cal+s.cal<=targCal+110
+      && !(s.cat==='protein' && T.p>=targP)); // once protein target is met, stop piling protein
+    if(!pool.length)break;
+    const pick=pool.sort((a,b)=>{
+      const fatA=(T.f<fatGoal*0.8&&a.cat==='fat')?-1:0, fatB=(T.f<fatGoal*0.8&&b.cat==='fat')?-1:0;
+      return (fatA-fatB)||((catUse[a.cat]||0)-(catUse[b.cat]||0))||favFirst(a,b)||(b.med-a.med);
+    })[0];
+    pick.used++;
+  }
+  /* build chosen list */
+  const chosen=stock.filter(s=>s.used>0);
+  return {gen:Date.now(),items:assignSlots(chosen)};
 }
-function foodRow(f){
-  const data=encodeURIComponent(JSON.stringify({name:f.name,serv:f.serv,cal:f.cal,p:f.p,c:f.c,f:f.f}));
-  const isFav=state.favorites.some(x=>x.name===f.name);
-  return `<div class="food-result"><div style="min-width:0"><div class="nm">${f.name}</div>
-    <div class="meta">${f.serv} · ${fmt(f.cal)} kcal · P${fmt(f.p)} C${fmt(f.c)} F${fmt(f.f)}</div></div>
-    <div class="acts">
-      <button class="iconbtn star ${isFav?'on':''}" onclick="toggleFav('${data}')">★</button>
-      <button class="iconbtn add" onclick="addFood('${data}')">+</button></div></div>`;
+function assignSlots(chosen){
+  // candidate slots per category; servings are dealt round-robin across them
+  const slotMap={
+    protein:['lunch','dinner','breakfast'],
+    grain:['lunch','dinner'],
+    veg:['lunch','dinner'],
+    fruit:['breakfast','snack1','snack2'],
+    fat:['snack2','dinner','snack1'],
+    breakfast:['breakfast'],
+    other:['snack2','lunch']
+  };
+  const slots={breakfast:{},snack1:{},lunch:{},snack2:{},dinner:{}};
+  const catIdx={};
+  chosen.forEach(s=>{
+    const targets=slotMap[s.cat]||['lunch'];
+    for(let k=0;k<s.used;k++){
+      const idx=(catIdx[s.cat]||0);catIdx[s.cat]=idx+1;
+      const slot=targets[idx%targets.length];
+      slots[slot][s.name]=slots[slot][s.name]||{s,n:0};
+      slots[slot][s.name].n++;
+    }
+  });
+  const items=[];let uid=0;
+  MEALS.forEach(m=>{
+    Object.values(slots[m.key]).forEach(({s,n})=>{
+      items.push({id:'p'+Date.now()+'_'+(uid++),name:s.name,serv:s.serv,cal:s.cal,p:s.p,c:s.c,f:s.f,servings:n,done:false,slot:m.key});
+    });
+  });
+  return items;
 }
-function addFood(data){
-  const f=JSON.parse(decodeURIComponent(data));const d=view.date;
-  state.foodLog[d]=state.foodLog[d]||[];
-  state.foodLog[d].push({...f,qty:1,meal:view.meal});
-  save();toast(`Added to ${mealLabel(view.meal)} 🍓`);
-  document.getElementById("foodSearch").value="";document.getElementById("foodResults").innerHTML="";
-  renderFoodLog();
+function ensurePlan(date){
+  if(!state.mealPlan[date]||!state.mealPlan[date].items){
+    state.mealPlan[date]=generatePlan(date);save();
+  }
+  return state.mealPlan[date];
 }
-function toggleFav(data){
-  const f=JSON.parse(decodeURIComponent(data));
-  const i=state.favorites.findIndex(x=>x.name===f.name);
-  if(i>-1){state.favorites.splice(i,1);toast("Removed from saved");}
-  else{state.favorites.push(f);toast("⭐ Saved for quick add");}
-  save();renderFavs();searchFood();
+function regeneratePlan(){
+  if(!state.pantry.length){toast("Add kitchen items first 🥫");openPantry();return;}
+  state.mealPlan[view.date]=generatePlan(view.date);
+  syncPlanToLog(view.date);save();renderPlanScreen();toast("Fresh plan ready 🍽️");
 }
-function renderFavs(){
-  const card=document.getElementById("favCard");
-  if(!state.favorites.length){card.style.display="none";return;}
-  card.style.display="";
-  document.getElementById("favList").innerHTML=state.favorites.map((f,i)=>
-    `<span class="ing-chip fav-chip" onclick="addFav(${i})">⭐ ${f.name} <button onclick="event.stopPropagation();rmFav(${i})" style="color:#c98a00">×</button></span>`).join("");
-}
-function addFav(i){const f=state.favorites[i];const d=view.date;state.foodLog[d]=state.foodLog[d]||[];
-  state.foodLog[d].push({...f,qty:1,meal:view.meal});save();toast(`Added to ${mealLabel(view.meal)} 🍓`);renderFoodLog();}
-function rmFav(i){state.favorites.splice(i,1);save();renderFavs();}
-function renderFoodLog(){
-  const d=view.date,log=state.foodLog[d]||[],t=dayTotals(d);
-  document.getElementById("foodKcal").textContent=fmt(t.cal)+" kcal";
+function renderPlanScreen(){
+  paintDateNavs();
+  const g=state.profile.goals;
+  document.getElementById("planGoalCal").textContent=g.cal;
+  document.getElementById("planGoalP").textContent=g.p;
+  if(!state.pantry.length){
+    document.getElementById("planSummary").innerHTML=
+      `<div class="empty-state"><div class="big">🥫</div>Your kitchen is empty. Add what you have on hand and I'll build a Mediterranean-style plan that hits your targets.</div>
+       <button class="btn" onclick="openPantry()">🥫 Set up my kitchen</button>`;
+    document.getElementById("planList").innerHTML="";return;
+  }
+  const plan=ensurePlan(view.date);
+  const t=planTotals(plan);
+  document.getElementById("planSummary").innerHTML=
+    `<div class="rings">${
+      ring("Calories",t.cal,g.cal,"var(--pink-500)","")+
+      ring("Protein",t.p,g.p,"var(--mint)","g")+
+      ring("Carbs",t.c,g.c,"var(--lav)","g")+
+      ring("Fat",t.f,g.f,"var(--peach)","g")}</div>`;
+  // grouped checklist
   let html="";
   MEALS.forEach(m=>{
-    const items=log.map((f,idx)=>({f,idx})).filter(o=>(o.f.meal||'breakfast')===m.key);
-    const kc=items.reduce((a,o)=>a+o.f.cal*o.f.qty,0);
-    html+=`<div class="meal-sec"><h3>${m.emoji} ${m.label}<span class="kc">${fmt(kc)} kcal</span></h3>`;
-    html+=items.length?items.map(o=>`
-      <div class="item"><div style="min-width:0"><div style="font-weight:700;color:var(--plum)">${o.f.name} ${o.f.qty>1?'×'+o.f.qty:''}</div>
-        <div class="meta">${fmt(o.f.cal*o.f.qty)} kcal · P${fmt(o.f.p*o.f.qty)} C${fmt(o.f.c*o.f.qty)} F${fmt(o.f.f*o.f.qty)}</div></div>
-      <div style="display:flex;gap:4px;align-items:center">
-        <button class="btn-mini" onclick="qty(${o.idx},1)">+</button>
-        <button class="btn-mini" onclick="qty(${o.idx},-1)">–</button>
-        <button class="x" onclick="delFood(${o.idx})">×</button></div></div>`).join("")
-      :`<p class="muted" style="font-size:.78rem;padding:4px 2px">Nothing yet.</p>`;
-    html+=`<button class="meal-add" onclick="addToMeal('${m.key}')">＋ Add to ${m.label}</button></div>`;
+    const items=plan.items.filter(i=>i.slot===m.key);
+    if(!items.length)return;
+    const kc=items.reduce((a,i)=>a+i.cal*i.servings,0);
+    html+=`<div class="card"><h3 style="font-size:1rem;color:var(--plum);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span>${m.emoji} ${m.label}</span><span class="kc" style="font-size:.76rem;font-weight:800;color:var(--pink-600)">${fmt(kc)} cal</span></h3>`;
+    html+=items.map(i=>{
+      const fav=isFavFood(i.name);
+      return `<div class="plan-item ${i.done?'done':''}">
+        <div class="cb" onclick="togglePlanItem('${i.id}')">${i.done?'✓':''}</div>
+        <div class="body">
+          <div class="nm">${i.name} ${i.servings>1?'<span style="color:var(--pink-600)">×'+i.servings+'</span>':''}</div>
+          <div class="mac">${i.servings>1?i.servings+' × ':''}${i.serv} · ${fmt(i.cal*i.servings)} cal · P${fmt(i.p*i.servings)} C${fmt(i.c*i.servings)} F${fmt(i.f*i.servings)}</div>
+        </div>
+        <button class="star ${fav?'on':''}" onclick="togglePlanFav('${i.id}')" title="Add to favorite rotation">${fav?'★':'☆'}</button>
+      </div>`;
+    }).join("");
+    html+=`</div>`;
   });
-  document.getElementById("foodLogList").innerHTML=html;
+  if(!plan.items.length){
+    html=`<div class="card empty-state"><div class="big">🤔</div>Couldn't build a plan from the current kitchen — try adding a couple of protein sources (chicken, eggs, yogurt, fish, beans).</div>`;
+  }
+  document.getElementById("planList").innerHTML=html;
 }
-function addToMeal(k){view.meal=k;setMealLabels();window.scrollTo({top:0,behavior:'smooth'});document.getElementById("foodSearch").focus();toast("Adding to "+mealLabel(k));}
-function qty(i,d){const f=state.foodLog[view.date][i];f.qty=Math.max(1,f.qty+d);save();renderFoodLog();}
-function delFood(i){state.foodLog[view.date].splice(i,1);save();renderFoodLog();}
-function openCustomFood(){
-  showModal(`<div class="grab"></div><h3>Add custom food 🧁</h3>
-    <label>Name</label><input id="cf_name" placeholder="My snack"/>
-    <div class="row" style="margin-top:10px"><div><label>Calories</label><input id="cf_cal" type="number" inputmode="numeric"/></div>
-      <div><label>Protein (g)</label><input id="cf_p" type="number" inputmode="numeric"/></div></div>
-    <div class="row" style="margin-top:10px"><div><label>Carbs (g)</label><input id="cf_c" type="number" inputmode="numeric"/></div>
-      <div><label>Fat (g)</label><input id="cf_f" type="number" inputmode="numeric"/></div></div>
-    <label style="margin-top:10px">Meal</label><select id="cf_meal">${MEALS.map(m=>`<option value="${m.key}" ${m.key===view.meal?'selected':''}>${m.label}</option>`).join("")}</select>
-    <label style="margin-top:10px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="cf_fav" style="width:auto"/> Save to my foods ⭐</label>
-    <button class="btn" style="margin-top:16px" onclick="saveCustomFood()">Add to log 💖</button>`);
+function togglePlanItem(id){
+  const plan=state.mealPlan[view.date];if(!plan)return;
+  const it=plan.items.find(i=>i.id===id);if(!it)return;
+  it.done=!it.done;
+  if(it.done)celebrate();
+  syncPlanToLog(view.date);save();renderPlanScreen();
+  if(view.date===todayStr())renderTodayLight();
 }
-function saveCustomFood(){
-  const g=id=>document.getElementById(id).value;
-  const f={name:g("cf_name")||"Custom food",serv:"1 serving",cal:+g("cf_cal")||0,p:+g("cf_p")||0,c:+g("cf_c")||0,f:+g("cf_f")||0};
-  const meal=g("cf_meal");const d=view.date;state.foodLog[d]=state.foodLog[d]||[];
-  state.foodLog[d].push({...f,qty:1,meal});
-  if(document.getElementById("cf_fav").checked&&!state.favorites.some(x=>x.name===f.name))state.favorites.push(f);
-  save();closeModal();toast("Added 🍓");renderFoodScreen();
+function togglePlanFav(id){
+  const plan=state.mealPlan[view.date];if(!plan)return;
+  const it=plan.items.find(i=>i.id===id);if(!it)return;
+  const i=state.favorites.findIndex(f=>f.name.toLowerCase()===it.name.toLowerCase());
+  if(i>-1){state.favorites.splice(i,1);toast("Removed from rotation");}
+  else{state.favorites.push({name:it.name,serv:it.serv,cal:it.cal,p:it.p,c:it.c,f:it.f});toast("★ Added to your rotation — I'll favor it next time");}
+  save();renderPlanScreen();
 }
+/* checked plan items flow into the daily food log so Today's rings reflect them */
+function syncPlanToLog(date){
+  const plan=state.mealPlan[date];if(!plan){return;}
+  const manual=(state.foodLog[date]||[]).filter(f=>!f.planItem);
+  const fromPlan=plan.items.filter(i=>i.done).map(i=>({name:i.name,serv:i.serv,cal:i.cal,p:i.p,c:i.c,f:i.f,qty:i.servings,meal:i.slot,planItem:i.id}));
+  state.foodLog[date]=[...manual,...fromPlan];
+}
+function renderTodayLight(){renderRings(todayStr());renderTodayPlan();}
 
 /* ---------- WATER ---------- */
 function renderWater(containerId,date){
@@ -740,43 +890,8 @@ function renderWater(containerId,date){
        <button class="btn-mini" onclick="addWater('${date}',16)">+16 oz</button>
        <button class="btn-mini" onclick="addWater('${date}',-8)">–8 oz</button></div>`;
 }
-function addWater(date,oz){state.water[date]=Math.max(0,(state.water[date]||0)+oz);save();
-  const onToday=document.querySelector("#screen-today").classList.contains("active");
-  renderWater(onToday?"waterToday":"waterToday",date);
-  if(onToday)renderWater("waterToday",todayStr());}
+function addWater(date,oz){state.water[date]=Math.max(0,(state.water[date]||0)+oz);save();renderWater("waterToday",todayStr());}
 function setWater(date,oz){const cur=state.water[date]||0;state.water[date]=(cur===oz)?oz-8:oz;if(state.water[date]<0)state.water[date]=0;save();renderWater("waterToday",date);}
-
-/* ---------- MEALS / ingredient matching ---------- */
-function addIngredient(){
-  const v=document.getElementById("ingInput").value.toLowerCase().trim();if(!v)return;
-  if(!state.ingredients.includes(v))state.ingredients.push(v);
-  document.getElementById("ingInput").value="";save();renderRecipes();
-}
-function delIngredient(i){state.ingredients.splice(i,1);save();renderRecipes();}
-function renderRecipes(){
-  document.getElementById("ingList").innerHTML=state.ingredients.map((ing,i)=>
-    `<span class="ing-chip">${ing}<button onclick="delIngredient(${i})">×</button></span>`).join("");
-  const have=state.ingredients;const box=document.getElementById("recipeResults");
-  if(!have.length){box.innerHTML=`<div class="card empty-state"><div class="big">🥗</div>Add ingredients above to see meals you can make.</div>`;return;}
-  const scored=RECIPES.map(r=>{
-    const matches=r.ing.filter(i=>have.some(h=>i.includes(h)||h.includes(i)));
-    return {r,score:matches.length/r.ing.length,matches,missing:r.ing.filter(i=>!have.some(h=>i.includes(h)||h.includes(i)))};
-  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
-  box.innerHTML=scored.length?scored.map(x=>`
-    <div class="card recipe-card">
-      <h3>${x.r.emoji} ${x.r.name}</h3>
-      <div class="match-bar"><i style="width:${fmt(x.score*100)}%"></i></div>
-      <div class="meta" style="font-size:.76rem">${fmt(x.score*100)}% match · you have ${x.matches.length}/${x.r.ing.length} ingredients</div>
-      <div class="macro-mini"><span><b>${x.r.cal}</b> kcal</span><span><b>${x.r.p}g</b> protein</span><span><b>${x.r.c}g</b> carbs</span><span><b>${x.r.f}g</b> fat</span></div>
-      <p style="font-size:.83rem;margin:10px 0 8px;color:var(--ink)">${x.r.steps}</p>
-      ${x.missing.length?`<p class="meta" style="font-size:.76rem">Still need: ${x.missing.join(", ")}</p>`:`<span class="pill">✓ You have everything!</span>`}
-      <button class="btn-mini" style="margin-top:8px" onclick='logRecipe(${JSON.stringify(x.r).replace(/'/g,"&#39;")})'>＋ Log this meal</button>
-    </div>`).join("")
-    :`<div class="card empty-state"><div class="big">🤔</div>No matches yet — try eggs, rice, chicken, or yogurt.</div>`;
-}
-function logRecipe(r){const d=view.date;state.foodLog[d]=state.foodLog[d]||[];
-  state.foodLog[d].push({name:r.name,serv:"1 serving",cal:r.cal,p:r.p,c:r.c,f:r.f,qty:1,meal:mealByHour()});
-  save();toast(`Logged ${r.name} 🍽️`);}
 
 /* ---------- WORKOUTS ---------- */
 function setWorkoutTab(t){view.workoutTab=t;
@@ -938,24 +1053,139 @@ function toggleBaby(id){
   save();renderBaby();
 }
 
+/* ---------- WEEKLY REVIEW ---------- */
+function weekStart(ds){const d=new Date(ds+"T00:00");const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return dstr(d);} // Monday
+function weekIndex(ds){return Math.floor(new Date(weekStart(ds)+"T00:00").getTime()/(7*86400000));}
+function promptForWeek(ds){return REVIEW_PROMPTS[weekIndex(ds)%REVIEW_PROMPTS.length];}
+const MOODS=[{e:"😞",v:1},{e:"😕",v:2},{e:"😐",v:3},{e:"🙂",v:4},{e:"😄",v:5}];
+let reviewMood=0;
+function renderReview(){
+  const wk=weekStart(todayStr());
+  const existing=state.reviews[wk]||{};
+  document.getElementById("reviewWeekLbl").textContent=prettyDate(wk);
+  document.getElementById("reviewPrompt").textContent=existing.prompt||promptForWeek(todayStr());
+  document.getElementById("reviewText").value=existing.reflection||"";
+  reviewMood=existing.mood||0;
+  document.getElementById("moodRow").innerHTML=MOODS.map(m=>
+    `<button class="${m.v===reviewMood?'on':''}" onclick="setMood(${m.v})">${m.e}</button>`).join("");
+  document.getElementById("coachOut").innerHTML=existing.response?coachHTML(existing.response):"";
+  renderPastReviews();
+}
+function setMood(v){reviewMood=v;document.querySelectorAll("#moodRow button").forEach((b,i)=>b.classList.toggle("on",MOODS[i].v===v));}
+function coachHTML(resp){
+  return `<div class="coach-box"><div class="hd">🌸 Your Bloom coach</div>
+    <p>${resp.message}</p>
+    ${resp.suggestions&&resp.suggestions.length?`<div style="font-weight:800;color:#2f8f6f;font-size:.82rem;margin-bottom:2px">For next week:</div>
+      <ul>${resp.suggestions.map(s=>`<li>${s}</li>`).join("")}</ul>`:""}
+    ${resp.source==='ai'?`<p class="muted" style="font-size:.68rem;margin:10px 0 0">✨ Generated with OpenAI</p>`:``}</div>`;
+}
+async function submitReview(){
+  const wk=weekStart(todayStr());
+  const text=document.getElementById("reviewText").value.trim();
+  if(!text){toast("Write a little reflection first 💗");return;}
+  const prompt=document.getElementById("reviewPrompt").textContent;
+  state.reviews[wk]={prompt,reflection:text,mood:reviewMood,date:todayStr()};
+  save();
+  document.getElementById("coachOut").innerHTML=`<div class="coach-box"><div class="hd">🌸 Your Bloom coach</div><p class="muted">Thinking about your week… 💭</p></div>`;
+  let resp;
+  if(state.profile.openaiKey){
+    try{resp=await aiCoach(text,prompt,reviewMood);}
+    catch(e){resp=localCoach(text,reviewMood);}
+  } else { resp=localCoach(text,reviewMood); }
+  state.reviews[wk].response=resp;save();
+  document.getElementById("coachOut").innerHTML=coachHTML(resp);celebrate();renderPastReviews();
+}
+/* ---- data-aware local coach ---- */
+function weekStats(){
+  let workouts=0, planDays=0, proteinHit=0, waterHit=0, days=0;
+  const now=new Date();
+  for(let i=0;i<7;i++){const dt=new Date(now);dt.setDate(now.getDate()-i);const ds=dstr(dt);days++;
+    if((state.workoutLog[ds]||[]).length)workouts++;
+    const t=dayTotals(ds);
+    if(t.cal>0)planDays++;
+    if(t.p>=(state.profile.goals.p||120)*0.9)proteinHit++;
+    if((state.water[ds]||0)>=(state.profile.waterGoal||64)*0.9)waterHit++;
+  }
+  return {workouts,planDays,proteinHit,waterHit,streak:calcStreak()};
+}
+function localCoach(text,mood){
+  const s=weekStats();
+  const t=text.toLowerCase();
+  const low=/tired|exhaust|stress|overwhelm|hard|struggl|anxious|sad|burnt|burned|rough|difficult|drain/.test(t)||mood&&mood<=2;
+  const high=/proud|great|good|energ|happy|strong|accomplish|win|progress|excited/.test(t)||mood>=4;
+  // opening — acknowledge tone
+  let open;
+  if(low)open=`Thank you for being honest about a heavier week — naming it takes real strength, and showing up here still counts. Be as kind to yourself as you'd be to a friend. 💗`;
+  else if(high)open=`I love the energy in this reflection${state.profile.name?', '+state.profile.name:''} — you should genuinely feel good about where your head's at this week. 🌸`;
+  else open=`Thanks for taking a few minutes to check in with yourself${state.profile.name?', '+state.profile.name:''}. That habit alone is quietly powerful. 🌱`;
+  // data callouts
+  const wins=[];
+  if(s.workouts>0)wins.push(`you moved your body on ${s.workouts} day${s.workouts>1?'s':''}`);
+  if(s.streak>=3)wins.push(`you're on a ${s.streak}-day movement streak`);
+  if(s.proteinHit>=3)wins.push(`you hit your protein target ${s.proteinHit} day${s.proteinHit>1?'s':''}`);
+  if(s.waterHit>=4)wins.push(`your hydration was solid`);
+  const winLine=wins.length?` Looking at your week: ${wins.slice(0,3).join(', ')} — that's real, keep it in view. `:` Even the small steps you took this week matter. `;
+  const message=open+winLine;
+  // suggestions
+  const sug=[];
+  if(s.workouts<3)sug.push(`Aim for 3 movement days — even a 20-minute walk counts. Pick the days now and add them to your calendar.`);
+  else sug.push(`Keep your movement rhythm going; maybe swap one session for something playful you enjoy.`);
+  if(s.proteinHit<4)sug.push(`Front-load protein: lean on the Greek yogurt, eggs, chicken, and legumes in your plan so 120g feels effortless.`);
+  else sug.push(`Your protein game is strong — keep leaning on Mediterranean proteins like fish and legumes 2–3× this week.`);
+  if(s.waterHit<4)sug.push(`Add one more glass of water in the morning — tie it to a habit you already have, like coffee.`);
+  if(low)sug.push(`Protect one small pocket of rest this week that's just yours — no guilt attached.`);
+  else sug.push(`Pick one thing from this reflection you want to carry forward and make it your gentle focus.`);
+  return {message,suggestions:sug.slice(0,3),source:'local'};
+}
+async function aiCoach(text,prompt,mood){
+  const s=weekStats();
+  const sys=`You are a warm, encouraging health & wellness coach inside a personal app. Respond to the user's weekly reflection with gentle, sincere encouragement (no toxic positivity), then give 2-3 specific, doable suggestions for next week. Keep it personal and concise. Return ONLY JSON: {"message":"...","suggestions":["...","..."]}`;
+  const ctx=`Prompt they answered: "${prompt}". Mood (1-5): ${mood||'n/a'}. This week's data: ${s.workouts} workout days, protein target hit ${s.proteinHit}/7 days, hydration good ${s.waterHit}/7 days, movement streak ${s.streak} days. Their reflection: "${text}"`;
+  const r=await fetch("https://api.openai.com/v1/chat/completions",{
+    method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+state.profile.openaiKey},
+    body:JSON.stringify({model:"gpt-4o-mini",temperature:0.8,response_format:{type:"json_object"},
+      messages:[{role:"system",content:sys},{role:"user",content:ctx}]})});
+  if(!r.ok)throw new Error("openai");
+  const j=await r.json();
+  const parsed=JSON.parse(j.choices[0].message.content);
+  return {message:parsed.message,suggestions:parsed.suggestions||[],source:'ai'};
+}
+function renderPastReviews(){
+  const wks=Object.keys(state.reviews).filter(w=>state.reviews[w].reflection).sort().reverse();
+  const card=document.getElementById("pastReviewsCard");
+  const cur=weekStart(todayStr());
+  const past=wks.filter(w=>w!==cur);
+  if(!past.length){card.style.display="none";return;}
+  card.style.display="";
+  document.getElementById("pastReviews").innerHTML=past.slice(0,8).map(w=>{
+    const r=state.reviews[w];const moodE=r.mood?MOODS[r.mood-1].e+' ':'';
+    return `<div class="review-past"><div class="wk">${moodE}Week of ${prettyDate(w)}</div>
+      <div class="muted" style="font-size:.8rem;margin:4px 0">${r.reflection.length>140?r.reflection.slice(0,140)+'…':r.reflection}</div>
+      ${r.response?`<div style="font-size:.78rem;color:#2f8f6f">🌸 ${r.response.message.length>120?r.response.message.slice(0,120)+'…':r.response.message}</div>`:""}</div>`;
+  }).join("");
+}
+
 /* ---------- SETTINGS ---------- */
 function openSettings(){
   const g=state.profile.goals,p=state.profile;
   showModal(`<div class="grab"></div><h3>Settings ⚙️</h3>
-    <label>Your name</label><input id="set_name" value="${p.name||''}" placeholder="Steph"/>
+    <label>Your name</label><input id="set_name" value="${p.name||''}" placeholder="Your name"/>
     <h3 style="font-size:1rem;margin:18px 0 10px">Daily goals 🎯</h3>
     <div class="row"><div><label>Calories</label><input id="set_cal" type="number" value="${g.cal}"/></div>
       <div><label>Protein (g)</label><input id="set_p" type="number" value="${g.p}"/></div></div>
     <div class="row" style="margin-top:10px"><div><label>Carbs (g)</label><input id="set_c" type="number" value="${g.c}"/></div>
       <div><label>Fat (g)</label><input id="set_f" type="number" value="${g.f}"/></div></div>
     <label style="margin-top:10px">Water goal (oz)</label><input id="set_water" type="number" value="${p.waterGoal}"/>
+    <h3 style="font-size:1rem;margin:18px 0 10px">Kitchen 🥫</h3>
+    <p class="muted" style="font-size:.76rem;margin:-4px 0 8px">Tell Bloom what you have on hand — it powers your auto meal plan.</p>
+    <button class="btn-ghost" style="width:100%" onclick="openPantry()">🥫 Manage kitchen inventory (${state.pantry.length} items)</button>
     <h3 style="font-size:1rem;margin:18px 0 10px">Little one 🧸</h3>
     <div class="row"><div><label>Name</label><input id="set_son" value="${p.sonName}"/></div>
       <div><label>Birthday</label><input id="set_dob" type="date" value="${p.sonDob}"/></div></div>
-    <h3 style="font-size:1rem;margin:18px 0 10px">USDA food database 🌐</h3>
-    <label>Free API key (optional — DEMO key works for light use)</label>
-    <input id="set_usda" value="${p.usdaKey||''}" placeholder="Paste key from api.data.gov"/>
-    <p class="muted" style="font-size:.72rem;margin:6px 0 0">Get a free key at api.data.gov/signup — paste it here for unlimited food search.</p>
+    <h3 style="font-size:1rem;margin:18px 0 10px">AI coach ✨ (optional)</h3>
+    <label>OpenAI API key — for live weekly encouragement</label>
+    <input id="set_openai" value="${p.openaiKey||''}" placeholder="sk-… (leave blank to use the built-in coach)"/>
+    <p class="muted" style="font-size:.72rem;margin:6px 0 0">Optional. Without a key, Bloom's built-in coach still writes you personalized encouragement offline.</p>
     <button class="btn" style="margin-top:16px" onclick="enableNotifications()">🔔 Enable reminders</button>
     <button class="btn" style="margin-top:10px" onclick="saveSettings()">Save 💖</button>
     <button class="btn-ghost" style="width:100%;margin-top:10px" onclick="resetData()">Reset all data</button>`);
@@ -963,19 +1193,144 @@ function openSettings(){
 function saveSettings(){
   const g=id=>document.getElementById(id).value;
   state.profile.name=g("set_name");
-  state.profile.goals={cal:+g("set_cal")||1800,p:+g("set_p")||130,c:+g("set_c")||170,f:+g("set_f")||55};
+  state.profile.goals={cal:+g("set_cal")||2000,p:+g("set_p")||120,c:+g("set_c")||220,f:+g("set_f")||70};
   state.profile.waterGoal=+g("set_water")||64;
   state.profile.sonName=g("set_son")||"Lucas";
   state.profile.sonDob=g("set_dob")||"2025-04-17";
-  state.profile.usdaKey=g("set_usda").trim();
+  state.profile.openaiKey=g("set_openai").trim();
   save();closeModal();toast("Saved 💖");renderToday();
 }
 function resetData(){if(confirm("Erase all your Bloom data on this device?")){localStorage.removeItem("bloom_state");state=load();closeModal();go('today');}}
 
+/* ---------- PANTRY / KITCHEN MANAGER ---------- */
+function openPantry(){
+  showModal(`<div class="grab"></div><h3>My Kitchen 🥫</h3>
+    <p class="muted" style="font-size:.78rem;margin:-6px 0 12px">Add foods you have on hand with a quantity (number of servings). Bloom uses these to auto-build your plan and favors ⭐ items you keep in rotation.</p>
+
+    <div class="src">Quick add</div>
+    <input id="pa_name" list="foodDL" placeholder="Food name (e.g. Chicken breast)" oninput="pantryAutofill()"/>
+    <datalist id="foodDL">${FOOD_DB.map(f=>`<option value="${f.name}">`).join("")}</datalist>
+    <div class="row" style="margin-top:8px">
+      <div style="flex:0 0 90px"><label>Qty</label><input id="pa_qty" type="number" inputmode="numeric" value="4" min="1"/></div>
+      <div><label>Serving</label><input id="pa_serv" placeholder="1 cup"/></div>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <div><label>Cal</label><input id="pa_cal" type="number" inputmode="numeric"/></div>
+      <div><label>Protein</label><input id="pa_p" type="number" inputmode="numeric"/></div>
+      <div><label>Carbs</label><input id="pa_c" type="number" inputmode="numeric"/></div>
+      <div><label>Fat</label><input id="pa_f" type="number" inputmode="numeric"/></div>
+    </div>
+    <button class="btn" style="margin-top:12px" onclick="addPantryItem()">➕ Add to kitchen</button>
+
+    <div class="src" style="margin-top:18px">Bulk paste</div>
+    <p class="muted" style="font-size:.72rem;margin:0 0 6px">One food per line — add a quantity like <b>Eggs x12</b> or <b>Spinach, 3</b>. Known foods auto-fill macros.</p>
+    <textarea id="pa_bulk" placeholder="Chicken breast x4&#10;Greek yogurt, 6&#10;Olive oil x1&#10;Spinach 3"></textarea>
+    <button class="btn-ghost" style="width:100%;margin-top:8px" onclick="importBulk()">📋 Import list</button>
+    <label style="margin-top:12px">Or upload a CSV (name,qty,cal,protein,carbs,fat,serving)</label>
+    <input id="pa_csv" type="file" accept=".csv,text/csv" onchange="importCSV(event)"/>
+    <button class="btn-ghost" style="width:100%;margin-top:12px" onclick="loadStarter()">🌿 Load Mediterranean starter kitchen</button>
+
+    <div class="src" style="margin-top:18px">In my kitchen (${state.pantry.length})</div>
+    <div id="pantryList"></div>
+    <button class="btn" style="margin-top:16px" onclick="closeModal();go('plan')">Done — build my plan 🍽️</button>`);
+  renderPantryList();
+}
+function pantryAutofill(){
+  const nm=document.getElementById("pa_name").value;
+  const d=dbLookup(nm);
+  if(d){
+    const set=(id,v)=>{const el=document.getElementById(id);if(el&&!el.dataset.touched)el.value=v;};
+    document.getElementById("pa_serv").value=d.serv;
+    document.getElementById("pa_cal").value=d.cal;
+    document.getElementById("pa_p").value=d.p;
+    document.getElementById("pa_c").value=d.c;
+    document.getElementById("pa_f").value=d.f;
+  }
+}
+function addPantryItem(){
+  const g=id=>document.getElementById(id).value;
+  const name=g("pa_name").trim();if(!name){toast("Add a food name 🥫");return;}
+  let cal=+g("pa_cal"),p=+g("pa_p"),c=+g("pa_c"),f=+g("pa_f"),serv=g("pa_serv").trim();
+  if(!cal&&!p&&!c&&!f){const d=dbLookup(name);if(d){cal=d.cal;p=d.p;c=d.c;f=d.f;serv=serv||d.serv;}}
+  const qty=Math.max(1,+g("pa_qty")||1);
+  upsertPantry({name,serv:serv||"1 serving",cal,p,c,f,qty});
+  toast("Added "+name+" 🥫");renderPantryList();refreshSettingsCount();
+  ["pa_name","pa_serv","pa_cal","pa_p","pa_c","pa_f"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});
+  document.getElementById("pa_qty").value=4;
+}
+function upsertPantry(item){
+  const i=state.pantry.findIndex(x=>x.name.toLowerCase()===item.name.toLowerCase());
+  if(i>-1){state.pantry[i]={...state.pantry[i],...item};}
+  else state.pantry.push(item);
+  save();
+}
+function parseQtyLine(line){
+  // "Name x4" | "Name, 4" | "Name 4" | "Name | 4"
+  let m=line.match(/^(.*?)[\s,|]*[x×]\s*(\d+(?:\.\d+)?)\s*$/i)
+     || line.match(/^(.*?)[,|]\s*(\d+(?:\.\d+)?)\s*$/)
+     || line.match(/^(.*?)\s+(\d+(?:\.\d+)?)\s*$/);
+  if(m)return {name:m[1].trim(),qty:+m[2]};
+  return {name:line.trim(),qty:4};
+}
+function importBulk(){
+  const raw=document.getElementById("pa_bulk").value.split("\n").map(l=>l.trim()).filter(Boolean);
+  let added=0,unknown=0;
+  raw.forEach(line=>{
+    const {name,qty}=parseQtyLine(line);if(!name)return;
+    const d=dbLookup(name);
+    if(d){upsertPantry({name:d.name,serv:d.serv,cal:d.cal,p:d.p,c:d.c,f:d.f,qty});added++;}
+    else{upsertPantry({name:titleCase(name),serv:"1 serving",cal:0,p:0,c:0,f:0,qty});unknown++;}
+  });
+  document.getElementById("pa_bulk").value="";
+  renderPantryList();refreshSettingsCount();
+  toast(`Imported ${added+unknown} item${added+unknown!==1?'s':''}${unknown?` · ${unknown} need macros`:''} 🥫`);
+}
+function importCSV(ev){
+  const file=ev.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const lines=e.target.result.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+    let added=0;
+    lines.forEach((line,idx)=>{
+      const cols=line.split(",").map(s=>s.trim());
+      if(idx===0&&/name/i.test(cols[0])&&isNaN(+cols[1]))return; // header
+      const [name,qty,cal,p,c,f,serv]=cols;
+      if(!name)return;
+      let item={name:titleCase(name),qty:Math.max(1,+qty||4),cal:+cal||0,p:+p||0,c:+c||0,f:+f||0,serv:serv||"1 serving"};
+      if(!item.cal&&!item.p){const d=dbLookup(name);if(d){item={...item,cal:d.cal,p:d.p,c:d.c,f:d.f,serv:d.serv};}}
+      upsertPantry(item);added++;
+    });
+    renderPantryList();refreshSettingsCount();toast(`Imported ${added} from CSV 🥫`);
+  };
+  reader.readAsText(file);
+}
+function loadStarter(){
+  STARTER_PANTRY.forEach(it=>upsertPantry({...it}));
+  renderPantryList();refreshSettingsCount();toast("Mediterranean starter loaded 🌿");
+}
+function renderPantryList(){
+  const box=document.getElementById("pantryList");if(!box)return;
+  if(!state.pantry.length){box.innerHTML=`<p class="muted" style="font-size:.8rem;padding:8px 2px">Nothing here yet — add items above.</p>`;return;}
+  box.innerHTML=state.pantry.map((x,i)=>{
+    const fav=isFavFood(x.name);const noMac=!(x.cal||x.p||x.c||x.f);
+    return `<div class="item"><div style="min-width:0">
+        <div style="font-weight:700;color:var(--plum)">${fav?'⭐ ':''}${x.name}</div>
+        <div class="meta">${x.serv} · ${noMac?'<span style="color:var(--pink-600)">tap to add macros</span>':fmt(x.cal)+' cal · P'+fmt(x.p)+' C'+fmt(x.c)+' F'+fmt(x.f)}</div></div>
+      <div style="display:flex;gap:4px;align-items:center">
+        <button class="btn-mini" onclick="pantryQty(${i},1)">+</button>
+        <span style="font-weight:800;color:var(--plum);min-width:20px;text-align:center">${x.qty}</span>
+        <button class="btn-mini" onclick="pantryQty(${i},-1)">–</button>
+        <button class="x" onclick="delPantry(${i})">×</button></div></div>`;
+  }).join("");
+}
+function pantryQty(i,d){state.pantry[i].qty=Math.max(0,(state.pantry[i].qty||0)+d);if(state.pantry[i].qty===0)state.pantry.splice(i,1);save();renderPantryList();refreshSettingsCount();}
+function delPantry(i){state.pantry.splice(i,1);save();renderPantryList();refreshSettingsCount();}
+function refreshSettingsCount(){/* header count updates next open; nothing live needed */}
+
 /* ---------- Notifications (work while app is open) ---------- */
 function enableNotifications(){
   if(!("Notification" in window)){toast("Notifications not supported here");return;}
-  Notification.requestPermission().then(p=>{toast(p==="granted"?"Reminders on 🔔":"Reminders blocked");scheduleReminders();});
+  Notification.requestPermission().then(p=>{toast(p==="granted"?"Reminders on 🔔":"Reminders blocked");scheduleReminders();scheduleMondayPrompt();});
 }
 let reminderTimers=[];
 function scheduleReminders(){
@@ -991,6 +1346,27 @@ function scheduleReminders(){
       },leaveAt-now));
     }
   });
+}
+/* Monday-morning weekly-review nudge (fires while app is open; also shows banner on open) */
+let mondayTimer;
+function scheduleMondayPrompt(){
+  if(mondayTimer)clearTimeout(mondayTimer);
+  if(!("Notification" in window)||Notification.permission!=="granted")return;
+  const now=new Date();
+  const next=new Date(now);
+  const daysToMon=((1-now.getDay())+7)%7;
+  next.setDate(now.getDate()+daysToMon);next.setHours(9,0,0,0);
+  if(next.getTime()<=now.getTime())next.setDate(next.getDate()+7);
+  const ms=next.getTime()-now.getTime();
+  if(ms<7*24*3600*1000){
+    mondayTimer=setTimeout(()=>{
+      const wk=weekStart(todayStr());
+      if(!(state.reviews[wk]&&state.reviews[wk].reflection)){
+        new Notification("🌱 Weekly reflection time",{body:"A fresh week is here — take a few minutes for your Bloom weekly review."});
+      }
+      scheduleMondayPrompt();
+    },ms);
+  }
 }
 
 /* ---------- Modal + toast + confetti ---------- */
@@ -1013,6 +1389,7 @@ function celebrate(){
 /* ---------- Boot ---------- */
 go('today');
 scheduleReminders();
+scheduleMondayPrompt();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
 </body>
