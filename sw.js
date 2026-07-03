@@ -1,10 +1,12 @@
 /* Bloom service worker — offline caching that still updates promptly.
    Strategy: network-first for the page/HTML (so you always get the latest when
    online, and fall back to cache offline); cache-first for static icons. */
-const CACHE = "bloom-v5";
+const CACHE = "bloom-v6";
 const ASSETS = [
   "./",
   "./index.html",
+  "./app.js",
+  "./games.js",
   "./manifest.json",
   "./icons/icon-180.png",
   "./icons/icon-192.png",
@@ -35,7 +37,6 @@ self.addEventListener("fetch", (e) => {
     (req.headers.get("accept") || "").includes("text/html");
 
   if (isHTML) {
-    // Network-first: always try to fetch the freshest page, cache it, fall back offline.
     e.respondWith(
       fetch(req)
         .then((resp) => {
@@ -48,7 +49,6 @@ self.addEventListener("fetch", (e) => {
     return;
   }
 
-  // Cache-first for other assets (icons, manifest), refresh in the background.
   e.respondWith(
     caches.match(req).then((cached) =>
       cached ||
